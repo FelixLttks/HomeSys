@@ -10,6 +10,8 @@ AsyncWebServer server(80);
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+String gridPowerCcu = "{\"ts\":0,\"v\":0,\"s\":0}";
+
 void setup()
 {
     Serial.begin(115200);

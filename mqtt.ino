@@ -22,5 +22,20 @@ void initializeMqtt(){
             delay(2000);
         }
     }
-    client.subscribe(gridpowerCcu.c_str());
+    client.subscribe(String(gridpowerCcu).c_str());
+}
+
+
+void callback(char *topic, byte *payload, unsigned int length)
+{
+    String payload_str;
+    for (int i = 0; i < length; i++)
+    {
+        payload_str += (char)payload[i];
+    }
+    Serial.println("topic: " + String(topic) + " payload: " + payload_str);
+
+    if(String(topic) == gridpowerCcu){
+        gridPowerCcu = payload_str;
+    }
 }

@@ -1,51 +1,156 @@
-html {
-    font-family: Arial;
-    display: inline-block;
-    margin: 0px auto;
-    text-align: center;
+:root {
+    --backgroundColor: #EEF1FA;
+    --elementColor: #F1F0FE;
+    --grayColor: #E6E8F2;
+    --whiteColor: #fff;
+    --fontColor: #37357B;
+    --fontColor2: #B8B4CB;
+    --buttonColor: #6266eb;
 }
 
-h1 {
-    color: #070812;
-    padding: 2vh;
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-.button {
-    display: inline-block;
-    background-color: #b30000;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    padding: 16px 40px;
-    text-decoration: none;
-    font-size: 30px;
-    margin: 2px;
-    cursor: pointer;
+.circle {
+    border-radius: 50%;
 }
 
-.button2 {
-    background-color: #364cf4;
+body {
+    background-color: var(--backgroundColor);
+    font-family: 'Plus Jakarta Display', sans-serif;
 }
 
 .content {
-    padding: 50px;
+    width: 100%;
+    /* background-color: red; */
+    padding: 1rem;
 }
 
-.card-grid {
-    max-width: 800px;
-    margin: 0 auto;
-    display: grid;
-    grid-gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+#header {
+    font-size: 1rem;
+    font-weight: 400;
 }
 
-.card {
-    background-color: white;
-    box-shadow: 2px 2px 12px 1px rgba(140, 140, 140, .5);
+#header h1 {
+    font-weight: 500;
 }
 
-.card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #034078
+.horizontalDevider {
+    width: 100%;
+    height: 2px;
+    background-color: var(--grayColor);
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+#status {
+    width: 100%;
+    background-color: var(--whiteColor);
+    border-radius: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--fontColor);
+}
+
+.statusCircles {
+    display: flex;
+    align-items: center;
+}
+
+.statusCircles>* {
+    background-color: red;
+    width: 1rem;
+    height: 1rem;
+    margin-left: 0.5rem;
+}
+
+#overview {
+    margin-top: 2rem;
+    width: 100%;
+    background-color: var(--whiteColor);
+    border-radius: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+#overviewGraphic {
+    /* background-color: antiquewhite; */
+    margin-top: 1rem;
+    height: calc(100vw - 4rem);
+    position: relative;
+}
+
+.overviewCircles {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.overviewCircles>* {
+    width: 5.6rem;
+    height: 5.6rem;
+    background-color: var(--elementColor);
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.4rem;
+    color: var(--fontColor);
+}
+
+#batteryOverview {
+    right: 0;
+}
+
+#inverterOverview {
+    left: 50%;
+    top: calc(0.5 * (100vw - 4rem));
+    transform: translate(-50%, -50%);
+}
+
+#gridOverview {
+    left: 0;
+    top: calc(1 * (100vw - 4rem));
+    transform: translate(0, -100%);
+}
+
+#houseOverview {
+    right: 0;
+    top: calc(1 * (100vw - 4rem));
+    transform: translate(0, -100%);
+}
+
+#connections {
+    position: absolute;
+    top: 2.8rem;
+    width: calc(100% - 5.6rem);
+    left: 2.8rem;
+    height: calc(2 * (100% - 5.6rem));
+}
+
+#connections svg {
+    height: 100%;
+}
+
+#connections .line {
+    stroke: var(--elementColor);
+    stroke-width: 1.5%;
+}
+
+#connections .svgCircle {
+    fill: #faa830;
 }

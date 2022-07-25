@@ -1,25 +1,101 @@
-<!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>ESP32 WEB SERVER</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="data:,">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Energy</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/plus-jakarta-display.min.css" />
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <h2>ESP32 WEB SERVER</h2>
     <div class="content">
-        <div class="card-grid">
-            <div class="card">
-                <p><i class="fas fa-lightbulb fa-2x" style="color:#c81919;"></i> <strong>GPIO2</strong></p>
-                <p>GPIO state: <strong> %GPIO_STATE%</strong></p>
-                <p>
-                    <a href="/led2on"><button class="button">ON</button></a>
-                    <a href="/led2off"><button class="button button2">OFF</button></a>
-                </p>
+        <div id="header">
+            <h1>Dashboard</h1>
+            <div class="horizontalDevider"></div>
+        </div>
+
+        <div id="status">
+            <h2 class="title">Status</h2>
+            <div class="statusCircles">
+                <div class="circle" id="statusInverter"></div>
+                <div class="circle" id="statusCcu3"></div>
+                <div class="circle" id="statusShelly"></div>
+            </div>
+        </div>
+
+        <div id="overview">
+            <h2 class="title">Overview</h2>
+            <div id="overviewGraphic">
+                <div id="connections">
+                    <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+                        <line class="line" x1="0" y1="0" x2="100" y2="100" />
+                        <line class="line" x1="0" y1="100" x2="100" y2="0" />
+                        <line class="line" x1="0" y1="100" x2="100" y2="100" />
+                        <circle class="svgCircle solarCircle" cx="0" cy="0" r="3" />
+                        <circle class="svgCircle batteryCircle" cx="50" cy="50" r="3" />
+                        <circle class="svgCircle gridCircle" cx="50" cy="50" r="3" />
+                        <circle class="svgCircle houseCircle" cx="50" cy="50" r="3" />
+                        <circle class="svgCircle directCircle" cx="0" cy="100" r="3" />
+                    </svg>
+                </div>
+
+                <div class="overviewCircles">
+                    <div class="circle" id="solarOverview">
+                        <div class="svgClass">
+                            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3.03465" y="19.7103" width="16.0522" height="26.8441" rx="4.5"
+                                    transform="rotate(-28.5656 3.03465 19.7103)" stroke="#383874" stroke-width="3" />
+                                <circle cx="32.5" cy="12.5" r="3" stroke="#383874" stroke-width="3" />
+                                <rect x="31" y="1" width="3" height="6" rx="1.5" fill="#383874" />
+                                <rect x="23.3" y="5.41992" width="3" height="6" rx="1.5"
+                                    transform="rotate(-45 23.3 5.41992)" fill="#383874" />
+                                <rect x="39.74" y="3.5" width="3" height="6" rx="1.5" transform="rotate(45 39.74 3.5)"
+                                    fill="#383874" />
+                                <rect x="27.2427" y="15" width="3" height="6" rx="1.5" transform="rotate(45 27.2427 15)"
+                                    fill="#383874" />
+                                <rect x="35.3" y="17.4199" width="3" height="6" rx="1.5"
+                                    transform="rotate(-45 35.3 17.4199)" fill="#383874" />
+                                <rect x="31" y="18" width="3" height="6" rx="1.5" fill="#383874" />
+                                <rect x="38" y="11" width="6" height="3" rx="1.5" fill="#383874" />
+                                <rect x="21" y="11" width="6" height="3" rx="1.5" fill="#383874" />
+                            </svg>
+                        </div>
+                        <p class="data">0000W</p>
+                    </div>
+                    <div class="circle" id="batteryOverview">
+                        <div class="svgClass">
+                            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="10.5" y="30.5" width="17" height="30" rx="4.5"
+                                    transform="rotate(-90 10.5 30.5)" stroke="#383874" stroke-width="3" />
+                                <path
+                                    d="M7 19.5H10.5V24.5H7C5.61929 24.5 4.5 23.3807 4.5 22C4.5 20.6193 5.61929 19.5 7 19.5Z"
+                                    stroke="#383874" stroke-width="3" />
+                                <path d="M21.5 19.5V24.5" stroke="#37357B" stroke-width="3" stroke-linecap="round" />
+                                <path d="M16.5 19.5V24.5" stroke="#37357B" stroke-width="3" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <p class="data">00%</p>
+                    </div>
+                    <div class="circle" id="inverterOverview">
+                        <object class="svgClass" type="image/svg+xml" data="https://feljxfeljx.github.io/EnergyLuttkus/images/inverter.svg"></object>
+                        <p class="data">00000W</p>
+                    </div>
+                    <div class="circle" id="gridOverview">
+                        <object class="svgClass" type="image/svg+xml" data="https://feljxfeljx.github.io/EnergyLuttkus/images/grid.svg"></object>
+                        <p class="data">0000W</p>
+                    </div>
+                    <div class="circle" id="houseOverview">
+                        <object class="svgClass" type="image/svg+xml" data="https://feljxfeljx.github.io/EnergyLuttkus/images/house.svg"></object>
+                        <p class="data">000W</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
