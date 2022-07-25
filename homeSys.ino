@@ -11,6 +11,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 String gridPowerCcu = "{\"ts\":0,\"v\":0,\"s\":0}";
+String qHomeToken;
 
 void setup()
 {
@@ -36,6 +37,7 @@ void setup()
 
     initializeServer();
     initializeMqtt();
+    qHomeToken = getNewQHomeToken();
 }
 
 void loop(){
