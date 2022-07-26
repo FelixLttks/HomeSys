@@ -48,3 +48,10 @@ function getNewQHomeToken() {
 
     dataLogin = JSON.parse(xhr.responseText);
 }
+
+config = JSON.parse(httpGet("/api?type=config"))
+
+qHome_usr = config.qHome_usr
+qHome_pwd = config.qHome_pwd
+
+console.log('qHome_usr: ' + qHome_usr)

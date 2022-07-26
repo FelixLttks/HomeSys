@@ -23,15 +23,10 @@ void initializeServer()
         }
 
         String type = request->getParam("type")->value();
-        if (type == "qhome")
+        if (type == "config")
         {
-            if (!(request->hasParam("date")))
-            {
-                request->send(200, "text/plain", "{\"error\":\"no date specified\", \"data\": {}");
-                return;
-            }
-            String date = request->getParam("date")->value();
-            request->send(200, "text/plain", postRequest("https://qhome-ess-g3.q-cells.eu/phoebus/inverterIndex/getInverterState", "inverterSn=" + String(inverter_sn) + "&time=" + date, qHomeToken));
+            String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHome_usr", "ERLA68"}, {"qHome_pwd", "a549745193b6b11309cc0737439ed835"}, {"inverter_sn", "H34B12H6157017"}};
+            request->send(200, "text/plain", createJsonFrom2dArray(config, 3));
         } 
         request->send(200, "text/plain", "{\"error\":\"no valid type\", \"data\": {}"); });
 
@@ -58,7 +53,9 @@ String postRequest(String url, String data, String token)
 {
     Serial.println("post req: " + url + " data: " + data + " token: " + token);
 
+    // WiFiClient client;
     HTTPClient http;
+    // http.begin(client, url);
     http.begin(url);
     http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
 
@@ -66,6 +63,7 @@ String postRequest(String url, String data, String token)
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     if (token != "")
     {
+        Serial.println("added token: " + token);
         http.addHeader("token", token);
     }
 
@@ -77,9 +75,12 @@ String postRequest(String url, String data, String token)
 
     if (httpResponseCode > 0)
     {
-        String response = http.getString();                                // Get the response to the request
+        // Serial.println(http);
+        String response = http.getString();    
+        Serial.print("length: ");
+        Serial.println(response.length());                            // Get the response to the request
         Serial.println("post req: " + url + " code: " + httpResponseCode); // Print return code
-        Serial.println(response);         // Print request answer
+        Serial.println(response);                                          // Print request answer
         return response;
     }
     else
@@ -87,6 +88,7 @@ String postRequest(String url, String data, String token)
         Serial.print("Error on sending POST: ");
         Serial.println(httpResponseCode);
     }
+    http.end();
     return "";
 }
 
@@ -94,4 +96,18 @@ String getNewQHomeToken()
 {
     String login = postRequest("https://qhome-ess-g3.q-cells.eu/phoebus/login/loginNew", "username=" + String(qHome_usr) + "&userpwd=" + String(qHome_pwd), "");
     return login.substring(login.indexOf("token") + 8, login.indexOf("token") + 44);
+}
+
+
+String createJsonFrom2dArray(String array[][2], int size){
+    String json = "{";
+    for (int i = 0; i < size; i++)
+    {
+        json += "\"" + array[i][0] + "\": \"" + array[i][1] + "\"," ;
+    }
+    // json = json.substring(0, json.length()-2) = "}";
+    int length = json.length();
+    json[length-1] = '}';
+    return json;
+
 }
