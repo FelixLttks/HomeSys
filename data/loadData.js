@@ -20,38 +20,49 @@ function httpGet(theUrl) {
     return xmlhttp.response;
 }
 
-function getQHomeData(token, inverter_sn, date) {
-    const data = "inverterSn=" + INVERTER_SN + "&time=" + date;
-
+function getQHomeData(token, inverter_sn, date, handleData) {
     const xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 
-    xhr.open("POST", "https://qhome-ess-g3.q-cells.eu/phoebus/inverterIndex/getInverterState", false);
+    xhr.addEventListener("readystatechange", function() {
+        if (this.readyState === this.DONE) {
+            // console.log(this.responseText);
+            handleData(this.responseText);
+        }
+    });
+
+    data = ''
+    if (date == '') {
+        // console.log('current status')
+        data = "inverterSN=" + inverter_sn;
+        xhr.open("POST", "https://qhome-ess-g3.q-cells.eu/phoebus/device/getInverterFromRedis");
+    } else {
+        // console.log('history status')
+        data = "inverterSn=" + inverter_sn + "&time=" + date;
+        xhr.open("POST", "https://qhome-ess-g3.q-cells.eu/phoebus/inverterIndex/getInverterState", false);
+    }
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
     xhr.setRequestHeader("token", token);
 
     xhr.send(data);
-
-    return JSON.parse(xhr.responseText);
 }
 
-function getNewQHomeToken() {
-    const xhrData = "username=" + USR + "&userpwd=" + PWD;
+function setCurrent(data) {
+    data = JSON.parse(data)
+    document.getElementById('solarOverview').querySelector('.data').innerHTML = (data.powerdc1 + data.powerdc2) + 'W'
+    document.getElementById('batteryOverview').querySelector('.data').innerHTML = data.batteryCapacity + '%'
+    document.getElementById('gridOverview').querySelector('.data').innerHTML = data.feedinpower + 'W'
+    document.getElementById('houseOverview').querySelector('.data').innerHTML = (data.powerdc1 + data.powerdc2 - data.feedinpower) + 'W'
 
-    const xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-
-    xhr.open("POST", "https://qhome-ess-g3.q-cells.eu/phoebus/login/loginNew", false);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-
-    xhr.send(xhrData);
-
-    dataLogin = JSON.parse(xhr.responseText);
+    updateDots(data)
 }
 
 config = JSON.parse(httpGet("/api?type=config"))
+console.log(config)
 
-qHome_usr = config.qHome_usr
-qHome_pwd = config.qHome_pwd
+qHomeToken = config.qHomeToken
+inverterSn = config.inverter_sn
 
-console.log('qHome_usr: ' + qHome_usr)
+console.log('qHomeToken: ' + qHomeToken)
+
+getQHomeData(qHomeToken, inverterSn, '', setCurrent)

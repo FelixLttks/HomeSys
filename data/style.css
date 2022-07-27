@@ -3,7 +3,7 @@
     --elementColor: #F1F0FE;
     --grayColor: #E6E8F2;
     --whiteColor: #fff;
-    --fontColor: #37357B;
+    --fontColor: #383874;
     --fontColor2: #B8B4CB;
     --buttonColor: #6266eb;
 }
@@ -12,104 +12,143 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-}
-
-.circle {
-    border-radius: 50%;
-}
-
-body {
-    background-color: var(--backgroundColor);
     font-family: 'Plus Jakarta Display', sans-serif;
 }
 
-.content {
+#sideMenu {
+    height: 100%;
+    width: 250px;
+    background-color: white;
+    position: fixed;
+}
+
+#content {
+    min-height: 100vh;
+    width: calc(100% - 250px);
+    background-color: var(--backgroundColor);
+    position: absolute;
+    right: 0;
+    padding: 2.5rem;
+}
+
+#sideMenu h1 {
+    margin-top: 5rem;
+    color: var(--buttonColor);
     width: 100%;
-    /* background-color: red; */
-    padding: 1rem;
+    text-align: center;
+    font-weight: bold;
 }
 
-#header {
-    font-size: 1rem;
-    font-weight: 400;
+#sideMenu .pageMenu {
+    margin-top: 3rem;
+    width: 80%;
+    /* background-color: bisque; */
+    position: relative;
+    left: 10%;
 }
 
-#header h1 {
-    font-weight: 500;
-}
-
-.horizontalDevider {
+#sideMenu .pageMenu .navBtn {
     width: 100%;
-    height: 2px;
-    background-color: var(--grayColor);
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-#status {
-    width: 100%;
-    background-color: var(--whiteColor);
-    border-radius: 0.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    display: flex;
-    justify-content: space-between;
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-.title {
-    font-weight: 500;
-    font-size: 1rem;
-    color: var(--fontColor);
-}
-
-.statusCircles {
+    height: 4rem;
     display: flex;
     align-items: center;
+    margin-bottom: 2rem;
+    border-radius: 0.65rem;
 }
 
-.statusCircles>* {
-    background-color: red;
-    width: 1rem;
-    height: 1rem;
-    margin-left: 0.5rem;
+#sideMenu .pageMenu .navBtn.selected {
+    background-color: var(--elementColor);
+}
+
+#sideMenu .pageMenu .navBtn.selected::after {
+    content: '';
+    position: absolute;
+    width: 0.65rem;
+    height: 4rem;
+    border-radius: 0.65rem 0 0 0.65rem;
+    background-color: var(--buttonColor);
+}
+
+#sideMenu .pageMenu .navBtn span {
+    margin-left: 2rem;
+    color: var(--fontColor2);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+#sideMenu .pageMenu .navBtn.selected span {
+    color: var(--buttonColor);
+}
+
+#content .pageTitle {
+    color: var(--fontColor);
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+.devider {
+    width: 100%;
+    height: 3px;
+    background-color: var(--grayColor);
+    margin-bottom: 2.5rem;
+}
+
+.container {
+    display: flex;
+    gap: 2.5rem;
 }
 
 #overview {
-    margin-top: 2rem;
+    /* background-color: red; */
     width: 100%;
+}
+
+.element {
+    width: 100%;
+}
+
+#status {
+    background-color: blue;
+    width: 100%;
+}
+
+.subtitle {
+    font-weight: 500;
+    color: var(--fontColor);
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.card {
     background-color: var(--whiteColor);
-    border-radius: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 0.5rem;
-    padding-bottom: 1rem;
+    border-radius: 0.65rem;
+    padding: 1.25rem;
 }
 
 #overviewGraphic {
-    /* background-color: antiquewhite; */
-    margin-top: 1rem;
-    height: calc(100vw - 4rem);
     position: relative;
+    aspect-ratio: 1 / 1;
+}
+
+#overviewGraphic>* {
+    position: absolute;
 }
 
 .overviewCircles {
     width: 100%;
     height: 100%;
-    position: relative;
 }
 
-.overviewCircles>* {
-    width: 5.6rem;
-    height: 5.6rem;
+.overviewCircles .circle {
     background-color: var(--elementColor);
-    position: absolute;
+    border-radius: 50%;
+    width: 7rem;
+    height: 7rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 0.4rem;
-    color: var(--fontColor);
+    position: absolute;
 }
 
 #batteryOverview {
@@ -118,39 +157,23 @@ body {
 
 #inverterOverview {
     left: 50%;
-    top: calc(0.5 * (100vw - 4rem));
+    top: 50%;
     transform: translate(-50%, -50%);
 }
 
 #gridOverview {
-    left: 0;
-    top: calc(1 * (100vw - 4rem));
-    transform: translate(0, -100%);
+    bottom: 0;
 }
 
 #houseOverview {
     right: 0;
-    top: calc(1 * (100vw - 4rem));
-    transform: translate(0, -100%);
+    bottom: 0;
 }
 
-#connections {
-    position: absolute;
-    top: 2.8rem;
-    width: calc(100% - 5.6rem);
-    left: 2.8rem;
-    height: calc(2 * (100% - 5.6rem));
+.overviewCircles .svgClass {
+    padding: 0.5rem;
 }
 
-#connections svg {
-    height: 100%;
-}
-
-#connections .line {
-    stroke: var(--elementColor);
-    stroke-width: 1.5%;
-}
-
-#connections .svgCircle {
-    fill: #faa830;
+.overviewCircles .data {
+    color: var(--fontColor);
 }

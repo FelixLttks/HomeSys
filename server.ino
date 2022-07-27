@@ -25,7 +25,7 @@ void initializeServer()
         String type = request->getParam("type")->value();
         if (type == "config")
         {
-            String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHome_usr", "ERLA68"}, {"qHome_pwd", "a549745193b6b11309cc0737439ed835"}, {"inverter_sn", "H34B12H6157017"}};
+            String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", "H34B12H6157017"}};
             request->send(200, "text/plain", createJsonFrom2dArray(config, 3));
         } 
         request->send(200, "text/plain", "{\"error\":\"no valid type\", \"data\": {}"); });
@@ -35,6 +35,9 @@ void initializeServer()
 
     server.on("/loadData.js", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(SPIFFS, "/loadData.js", "text/javascript"); });
+
+    server.on("/overviewDots.js", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/overviewDots.js", "text/javascript"); });
 
     server.begin();
 }
@@ -76,9 +79,9 @@ String postRequest(String url, String data, String token)
     if (httpResponseCode > 0)
     {
         // Serial.println(http);
-        String response = http.getString();    
+        String response = http.getString();
         Serial.print("length: ");
-        Serial.println(response.length());                            // Get the response to the request
+        Serial.println(response.length());                                 // Get the response to the request
         Serial.println("post req: " + url + " code: " + httpResponseCode); // Print return code
         Serial.println(response);                                          // Print request answer
         return response;
@@ -98,16 +101,15 @@ String getNewQHomeToken()
     return login.substring(login.indexOf("token") + 8, login.indexOf("token") + 44);
 }
 
-
-String createJsonFrom2dArray(String array[][2], int size){
+String createJsonFrom2dArray(String array[][2], int size)
+{
     String json = "{";
     for (int i = 0; i < size; i++)
     {
-        json += "\"" + array[i][0] + "\": \"" + array[i][1] + "\"," ;
+        json += "\"" + array[i][0] + "\": \"" + array[i][1] + "\",";
     }
     // json = json.substring(0, json.length()-2) = "}";
     int length = json.length();
-    json[length-1] = '}';
+    json[length - 1] = '}';
     return json;
-
 }
