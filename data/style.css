@@ -15,6 +15,10 @@
     font-family: 'Plus Jakarta Display', sans-serif;
 }
 
+html {
+    background-color: var(--backgroundColor);
+}
+
 #sideMenu {
     height: 100%;
     width: 250px;
@@ -92,6 +96,7 @@
     height: 3px;
     background-color: var(--grayColor);
     margin-bottom: 2.5rem;
+    margin-top: 2.5rem;
 }
 
 .container {
@@ -104,20 +109,27 @@
     width: 100%;
 }
 
+#overview .subtitle {
+    margin-bottom: 1rem;
+}
+
 .element {
     width: 100%;
+    position: relative;
 }
 
 #status {
-    background-color: blue;
+    /* background-color: blue; */
     width: 100%;
+    margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 .subtitle {
     font-weight: 500;
     color: var(--fontColor);
     font-size: 1.25rem;
-    margin-bottom: 1.25rem;
 }
 
 .card {
@@ -176,4 +188,52 @@
 
 .overviewCircles .data {
     color: var(--fontColor);
+}
+
+.connections {
+    height: calc(100% - 7rem);
+    width: calc(100% - 7rem);
+    /* background-color: red; */
+    left: 3.5rem;
+    top: 3.5rem;
+}
+
+.line {
+    stroke: var(--elementColor);
+    stroke-width: 1.5%;
+}
+
+.statusCircles {
+    display: flex;
+    align-items: center;
+}
+
+.statusCircle {
+    background-color: red;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    margin-left: 1rem;
+}
+
+#stats {
+    height: calc(100% - 6.25rem);
+    position: absolute;
+    width: 100%;
+    color: var(--fontColor2);
+}
+
+#stats table tr td {
+    width: 100%;
+    color: var(--fontColor2);
+    font-size: 1.25rem;
+    height: 2rem;
+}
+
+#stats table td:nth-child(2) {
+    text-align: end;
+}
+
+#stats .subtitle {
+    margin-bottom: 1rem;
 }
