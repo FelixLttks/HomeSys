@@ -54,7 +54,24 @@ function setCurrent(data) {
     document.getElementById('gridOverview').querySelector('.data').innerHTML = data.feedinpower + 'W'
     document.getElementById('houseOverview').querySelector('.data').innerHTML = (data.powerdc1 + data.powerdc2 - data.feedinpower) + 'W'
 
-    updateDots(data)
+    // updateDots(data)
+}
+
+function setChart(data) {
+    data = JSON.parse(data)
+    for (let i = 0; i < data.length; i++) {
+        uploadTimeValue = data[i].uploadTimeValue
+        dataQHome.push({
+            ts: (parseInt(uploadTimeValue.slice(11, 13)) * 60 + parseInt(uploadTimeValue.slice(14, 16))) * 100 / (60 * 24),
+            uploadTimeValue: uploadTimeValue,
+            solar: data[i].pvPower,
+            grid: data[i].gridpower,
+            battery: data[i].batteryCapacity,
+            feedinpower: -data[i].feedinpower,
+            consumption: data[i].pvPower - data[i].feedinpower - data[i].bmsBatPower
+        })
+    }
+    consog.log(dataQHome)
 }
 
 config = JSON.parse(httpGet("/api?type=config"))
@@ -65,4 +82,7 @@ inverterSn = config.inverter_sn
 
 console.log('qHomeToken: ' + qHomeToken)
 
+dataQHome = []
+
 getQHomeData(qHomeToken, inverterSn, '', setCurrent)
+getQHomeData(qHomeToken, inverterSn, '2022-07-28', setChart)

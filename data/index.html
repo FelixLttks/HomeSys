@@ -13,6 +13,9 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/plus-jakarta-display.min.css" />
     <link rel="stylesheet" href="style.css" />
+
+    <script src="loadData.js"></script>
+    <script src="chart.js" defer></script>
 </head>
 
 <body>
@@ -197,69 +200,57 @@
             <svg fill="red" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
                 <path d="M 20 5 20 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
                 <path d="M 20 95 200 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
-                <text text-anchor="end" id="maxY" x="18" y="5" class="unit">1000</text>
+                <text text-anchor="end" id="maxY" x="18" y="5" class="unit">1</text>
                 <text text-anchor="end" x="18" y="95" class="unit">0</text>
                 <text x="185" y="105" class="unit">24:00</text>
                 <text x="20" y="105" class="unit">00:00</text>
                 <text x="102" y="105" class="unit">12:00</text>
-                <text text-anchor="end" id="halfY" x="18" y="95" class="unit">5</text>
-                <path id="halfYdash" stroke-dasharray="5,5" d="M20 20 l215 0" stroke="var(--grayColor)"
+                <text text-anchor="end" id="halfY" x="18" y="50" class="unit">0.5</text>
+                <path id="halfYdash" stroke-dasharray="5,5" d="M20 50 l215 0" stroke="var(--grayColor)"
                     stroke-width="0.5" />
-                <path stroke-dasharray="5,5" d="M110 5 l0 95" stroke="var(--grayColor)"
-                    stroke-width="0.5" />
-                <polyline id="path" stroke-width="0.5" points="" fill="none" stroke="red" />
+                <path stroke-dasharray="5,5" d="M110 5 l0 95" stroke="var(--grayColor)" stroke-width="0.5" />
+                <g id="lines">
+                    <polyline id="path" stroke-width="0.5" points="" fill="none" stroke="red" />
+                </g>
+
             </svg>
+            <div id="chartSwitches" class="container">
+                <div class="element">
+                    <div class="switchContainer" id="houseSwitch">
+                        <p>Verbrauch</p>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleChart(3, this)">
+                            <span class="slider round" color="#FBB13F"></span>
+                        </label>
+                    </div>
+                    <div class="switchContainer" id="solarSwitch">
+                        <p>Produktion</p>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleChart(0, this)">
+                            <span class="slider round" color="#FBB13F"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="element">
+                    <div class="switchContainer" id="batterySwitch">
+                        <p>Speicher</p>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleChart(2, this)">
+                            <span class="slider round" color="#FBB13F"></span>
+                        </label>
+                    </div>
+                    <div class="switchContainer" id="gridSwitch">
+                        <p>Netzstrom</p>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleChart(1, this)">
+                            <span class="slider round" color="#FBB13F"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
-        <script>
-            function getMax(arr, prop) {
-                var max;
-                for (var i = 0; i < arr.length; i++) {
-                    if (max == null || parseInt(arr[i][prop]) > parseInt(max[prop]))
-                        max = arr[i];
-                }
-                return max;
-            }
 
-            data = [{
-                "x": 2,
-                "y": 4
-            }, {
-                "x": 5,
-                "y": 2
-            }, {
-                "x": 8,
-                "y": 10000
-            }, {
-                "x": 7,
-                "y": 1
-            }, {
-                "x": 3,
-                "y": 2
-            }, {
-                "x": 10,
-                "y": 1
-            }]
-            data.sort(function(a, b) {
-                return parseFloat(a.x) - parseFloat(b.x);
-            });
-            max = getMax(data, 'y')
-            points = '20,' + (95 - data[0].y * (90 / max.y))
-            var objCount = data.length;
-            for (var x = 0; x < objCount; x++) {
-                var curitem = data[x];
-                points += ' ' + (curitem.x * 18 + 20) + ',' + (95 - curitem.y * (90 / max.y))
-            }
-            console.log(points)
-            document.getElementById('path').setAttribute('points', points)
 
-            console.log(max)
-            document.getElementById('maxY').innerHTML = max.y
-            roundedHalf = Math.round(max.y / 2)
-            console.log(roundedHalf)
-            document.getElementById('halfY').setAttribute('y', (95 - roundedHalf * (90 / max.y)) + 2)
-            document.getElementById('halfY').innerHTML = roundedHalf
-            document.getElementById('halfYdash').setAttribute('d', 'M20 ' + (95 - roundedHalf * (90 / max.y)) + ' l215 0')
-        </script>
     </div>
 </body>
 
