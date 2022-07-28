@@ -39,6 +39,9 @@ void initializeServer()
     server.on("/chart.js", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(SPIFFS, "/chart.js", "text/javascript"); });
 
+    server.on("/overviewDots.js", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/overviewDots.js", "text/javascript"); });
+
     server.begin();
 }
 

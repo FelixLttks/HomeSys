@@ -14,8 +14,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/plus-jakarta-display.min.css" />
     <link rel="stylesheet" href="style.css" />
 
-    <script src="loadData.js"></script>
+    <script src="overviewDots.js"></script>
     <script src="chart.js" defer></script>
+    <script src="loadData.js"></script>
 </head>
 
 <body>
@@ -38,6 +39,10 @@
                         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                             <line class="line" x1="0" y1="0" x2="100" y2="100" />
                             <line class="line" x1="0" y1="100" x2="100" y2="0" />
+                            <circle class="svgCircle solarCircle" cx="0" cy="0" r="3" />
+                            <circle class="svgCircle batteryCircle" cx="50" cy="50" r="3" />
+                            <circle class="svgCircle gridCircle" cx="50" cy="50" r="3" />
+                            <circle class="svgCircle houseCircle" cx="50" cy="50" r="3" />
                         </svg>
                     </div>
                     <div class="overviewCircles">
@@ -180,18 +185,62 @@
             <h2 class="subtitle">History</h2>
             <div class="datePicker">
                 <div class="datePickerArrows">
-                    <div class="leftDatePicker datePickerArrow">
-                        <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"></svg>
-                    </div>
-                    <div class="rightDatePicker datePickerArrow"></div>
+                    <div class="leftDatePicker datePickerArrow" onclick="changeDate(-1)"></div>
+                    <div class="rightDatePicker datePickerArrow" onclick="changeDate(1)"></div>
+                    <script>
+                        date = new Date()
+                        console.log('today: ' + date.toISOString().split('T')[0])
+
+                        function changeDate(delta) {
+                            if (
+                                date.getFullYear() === new Date().getFullYear() &&
+                                date.getMonth() === new Date().getMonth() &&
+                                date.getDate() === new Date().getDate() &&
+                                delta > 0
+                            ) {
+                                return
+                            }
+                            date.setDate(date.getDate() + delta);
+                            loadChart(date.toISOString().split('T')[0])
+
+                            day = date.getDate();
+                            month = date.getMonth() + 1;
+                            if ((String(day)).length == 1)
+                                day = '0' + day;
+                            if ((String(month)).length == 1)
+                                month = '0' + month;
+
+                            document.getElementById('datePicked').innerHTML = day + '.' + month + '.'
+
+                            if (
+                                date.getFullYear() === new Date().getFullYear() &&
+                                date.getMonth() === new Date().getMonth() &&
+                                date.getDate() === new Date().getDate()
+                            ) {
+                                document.getElementById('rightDatePicker').style.visibility = 'hidden'
+                            } else {
+                                document.getElementById('rightDatePicker').style.visibility = 'visible'
+                            }
+                        }
+                    </script>
                 </div>
                 <div class="datePickerOver">
-                    <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <svg id="leftDatePicker" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                         <polyline points="67,16 33,50 67,84" fill="none" stroke="var(--buttonColor)"
                             stroke-width="10" />
                     </svg>
                     <p id="datePicked">22.07.</p>
-                    <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <script>
+                        day = new Date().getDate();
+                        month = new Date().getMonth() + 1;
+                        if ((String(day)).length == 1)
+                            day = '0' + day;
+                        if ((String(month)).length == 1)
+                            month = '0' + month;
+
+                        document.getElementById('datePicked').innerHTML = day + '.' + month + '.'
+                    </script>
+                    <svg style="visibility: hidden;" id="rightDatePicker" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                         <polyline points="33,16 67,50 33,84" fill="none" stroke="var(--buttonColor)"
                             stroke-width="10" />
                     </svg>
@@ -200,13 +249,18 @@
             <svg fill="red" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
                 <path d="M 20 5 20 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
                 <path d="M 20 95 200 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
+                <path id="zeroYLine" d="M 20 95 200 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
                 <text text-anchor="end" id="maxY" x="18" y="5" class="unit">1</text>
-                <text text-anchor="end" x="18" y="95" class="unit">0</text>
+                <text text-anchor="end" id="minY" x="18" y="95" class="unit">0</text>
+                <text text-anchor="end" id="zeroY" x="18" y="95" class="unit">0</text>
                 <text x="185" y="105" class="unit">24:00</text>
                 <text x="20" y="105" class="unit">00:00</text>
                 <text x="102" y="105" class="unit">12:00</text>
                 <text text-anchor="end" id="halfY" x="18" y="50" class="unit">0.5</text>
+                <text text-anchor="end" id="negHalfY" x="18" y="50" class="unit">0.5</text>
                 <path id="halfYdash" stroke-dasharray="5,5" d="M20 50 l215 0" stroke="var(--grayColor)"
+                    stroke-width="0.5" />
+                <path id="negHalfYdash" stroke-dasharray="5,5" d="M20 50 l215 0" stroke="var(--grayColor)"
                     stroke-width="0.5" />
                 <path stroke-dasharray="5,5" d="M110 5 l0 95" stroke="var(--grayColor)" stroke-width="0.5" />
                 <g id="lines">

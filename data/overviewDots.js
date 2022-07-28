@@ -47,9 +47,5 @@ function updateDots(data) {
             defaults: { duration: duration, opacity: 1, ease: ease },
             repeat: -1
         }).to('.gridCircle', { y: -50, x: 50 })
-        gsap.timeline({
-            defaults: { duration: duration, opacity: 1, ease: ease },
-            repeat: -1
-        }).to('.directCircle', { x: 100 })
     }
 }

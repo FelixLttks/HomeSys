@@ -8,12 +8,6 @@ function httpGet(theUrl) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            return xmlhttp.responseText;
-        }
-    }
-
     xmlhttp.open("GET", theUrl, false);
     xmlhttp.send();
 
@@ -39,7 +33,7 @@ function getQHomeData(token, inverter_sn, date, handleData) {
     } else {
         // console.log('history status')
         data = "inverterSn=" + inverter_sn + "&time=" + date;
-        xhr.open("POST", "https://qhome-ess-g3.q-cells.eu/phoebus/inverterIndex/getInverterState", false);
+        xhr.open("POST", "https://qhome-ess-g3.q-cells.eu/phoebus/inverterIndex/getInverterState");
     }
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
     xhr.setRequestHeader("token", token);
@@ -49,15 +43,26 @@ function getQHomeData(token, inverter_sn, date, handleData) {
 
 function setCurrent(data) {
     data = JSON.parse(data)
+    if (document.readyState === 'complete') {
+        updateCurrentUi(data)
+        return
+    }
+    document.addEventListener("DOMContentLoaded", function(event) {
+        updateCurrentUi(data)
+    });
+}
+
+function updateCurrentUi(data) {
     document.getElementById('solarOverview').querySelector('.data').innerHTML = (data.powerdc1 + data.powerdc2) + 'W'
     document.getElementById('batteryOverview').querySelector('.data').innerHTML = data.batteryCapacity + '%'
-    document.getElementById('gridOverview').querySelector('.data').innerHTML = data.feedinpower + 'W'
-    document.getElementById('houseOverview').querySelector('.data').innerHTML = (data.powerdc1 + data.powerdc2 - data.feedinpower) + 'W'
+    document.getElementById('gridOverview').querySelector('.data').innerHTML = Math.abs(data.feedinpower) + 'W'
+    document.getElementById('houseOverview').querySelector('.data').innerHTML = (data.powerdc1 + data.powerdc2 - data.feedinpower - data.batPower1) + 'W'
 
-    // updateDots(data)
+    updateDots(data)
 }
 
 function setChart(data) {
+    dataQHome = []
     data = JSON.parse(data)
     for (let i = 0; i < data.length; i++) {
         uploadTimeValue = data[i].uploadTimeValue
@@ -71,7 +76,15 @@ function setChart(data) {
             consumption: data[i].pvPower - data[i].feedinpower - data[i].bmsBatPower
         })
     }
-    consog.log(dataQHome)
+    if (document.readyState === 'complete') {
+        createDataset(dataQHome)
+    }
+    console.log(dataQHome)
+}
+
+function loadChart(date) {
+    console.log('loadChart: ' + date)
+    getQHomeData(qHomeToken, inverterSn, date, setChart)
 }
 
 config = JSON.parse(httpGet("/api?type=config"))
