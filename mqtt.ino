@@ -35,7 +35,7 @@ void callback(char *topic, byte *payload, unsigned int length)
     }
     Serial.println("topic: " + String(topic) + " payload: " + payload_str);
 
-    if(String(topic) == gridpowerCcu){
-        gridPowerCcu = payload_str;
-    }
+    // if(String(topic) == gridpowerCcu){
+    //     // gridPowerCcu = payload_str;
+    // }
 }

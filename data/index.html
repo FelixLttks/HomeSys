@@ -19,344 +19,363 @@
     <script src="chart.js" defer></script>
     <script src="loadData.js"></script>
     <script src="recommendation.js" defer></script>
+    <script src="main.js"></script>
 </head>
 
 <body>
     <div id="sideMenu">
         <h1 class="title">Luttkus</h1>
         <div class="pageMenu">
-            <div class="navBtn selected"><span>Dashboard</span></div>
-            <div class="navBtn"><span>Homematic</span></div>
-            <div class="navBtn"><span>Felix</span></div>
+            <div class="navBtn selected" onclick="openSubContent('dashboard', this)"><span>Dashboard</span></div>
+            <div class="navBtn" onclick="openSubContent('homematic', this)"><span>Homematic</span></div>
+            <div class="navBtn" onclick="openSubContent('felix', this)"><span>Felix</span></div>
         </div>
+        <p id="lastUpdated">last updated: 19:50</p>
     </div>
     <div id="content">
-        <h2 class="pageTitle">Dashboard</h2>
-        <div class="devider"></div>
-        <div class="container">
-            <div id="overview" class="card">
-                <h2 class="subtitle">Overview</h2>
-                <div id="overviewGraphic">
-                    <div class="connections">
-                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <line class="line" x1="0" y1="0" x2="100" y2="100" />
-                            <line class="line" x1="0" y1="100" x2="100" y2="0" />
-                            <circle class="svgCircle solarCircle" cx="0" cy="0" r="3" />
-                            <circle class="svgCircle batteryCircle" cx="50" cy="50" r="3" />
-                            <circle class="svgCircle gridCircle" cx="50" cy="50" r="3" />
-                            <circle class="svgCircle houseCircle" cx="50" cy="50" r="3" />
-                        </svg>
-                    </div>
-                    <div class="overviewCircles">
-                        <div class="circle" id="solarOverview">
-                            <div class="svgClass">
-                                <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="3.03465" y="19.7103" width="16.0522" height="26.8441" rx="4.5"
-                                        transform="rotate(-28.5656 3.03465 19.7103)" stroke="#383874"
-                                        stroke-width="3" />
-                                    <circle cx="32.5" cy="12.5" r="3" stroke="#383874" stroke-width="3" />
-                                    <rect x="31" y="1" width="3" height="6" rx="1.5" fill="#383874" />
-                                    <rect x="23.3" y="5.41992" width="3" height="6" rx="1.5"
-                                        transform="rotate(-45 23.3 5.41992)" fill="#383874" />
-                                    <rect x="39.74" y="3.5" width="3" height="6" rx="1.5"
-                                        transform="rotate(45 39.74 3.5)" fill="#383874" />
-                                    <rect x="27.2427" y="15" width="3" height="6" rx="1.5"
-                                        transform="rotate(45 27.2427 15)" fill="#383874" />
-                                    <rect x="35.3" y="17.4199" width="3" height="6" rx="1.5"
-                                        transform="rotate(-45 35.3 17.4199)" fill="#383874" />
-                                    <rect x="31" y="18" width="3" height="6" rx="1.5" fill="#383874" />
-                                    <rect x="38" y="11" width="6" height="3" rx="1.5" fill="#383874" />
-                                    <rect x="21" y="11" width="6" height="3" rx="1.5" fill="#383874" />
-                                </svg>
-                            </div>
-                            <p class="data">0000W</p>
-                        </div>
-                        <div class="circle" id="batteryOverview">
-                            <div class="svgClass">
-                                <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="10.5" y="30.5" width="17" height="30" rx="4.5"
-                                        transform="rotate(-90 10.5 30.5)" stroke="#383874" stroke-width="3" />
-                                    <path
-                                        d="M7 19.5H10.5V24.5H7C5.61929 24.5 4.5 23.3807 4.5 22C4.5 20.6193 5.61929 19.5 7 19.5Z"
-                                        stroke="#383874" stroke-width="3" />
-                                    <path d="M21.5 19.5V24.5" stroke="#37357B" stroke-width="3"
-                                        stroke-linecap="round" />
-                                    <path d="M16.5 19.5V24.5" stroke="#37357B" stroke-width="3"
-                                        stroke-linecap="round" />
-                                </svg>
-                            </div>
-                            <p class="data">89%</p>
-                        </div>
-                        <div class="circle" id="inverterOverview">
-                            <div class="svgClass">
-                                <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="10.5" y="4.5" width="24" height="33" rx="4.5" stroke="#383874"
-                                        stroke-width="3" />
-                                    <path
-                                        d="M16 39H21V39.5C21 40.8807 19.8807 42 18.5 42C17.1193 42 16 40.8807 16 39.5V39Z"
-                                        fill="#383874" />
-                                    <path
-                                        d="M24 39H29V39.5C29 40.8807 27.8807 42 26.5 42C25.1193 42 24 40.8807 24 39.5V39Z"
-                                        fill="#383874" />
-                                    <mask id="path-4-inside-1_13_154" fill="white">
-                                        <rect x="15" y="9" width="15" height="11" rx="2" />
-                                    </mask>
-                                    <rect x="15" y="9" width="15" height="11" rx="2" stroke="#383874" stroke-width="6"
-                                        mask="url(#path-4-inside-1_13_154)" />
-                                    <mask id="path-5-inside-2_13_154" fill="white">
-                                        <rect x="18" y="23" width="9" height="10" rx="2" />
-                                    </mask>
-                                    <rect x="18" y="23" width="9" height="10" rx="2" stroke="#383874" stroke-width="6"
-                                        mask="url(#path-5-inside-2_13_154)" />
-                                </svg>
-                            </div>
-                            <p class="data">9.67kW</p>
-                        </div>
-                        <div class="circle" id="gridOverview">
-                            <div class="svgClass">
-                                <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M16.5 8C16.5 5.51472 18.5147 3.5 21 3.5H24C26.4853 3.5 28.5 5.51472 28.5 8V28.5H16.5V8Z"
-                                        stroke="#383874" stroke-width="3" />
-                                    <rect x="10.5" y="40.5" width="12" height="25" rx="4.5"
-                                        transform="rotate(-90 10.5 40.5)" stroke="#383874" stroke-width="3" />
-                                    <path
-                                        d="M19 4L7.53923 12.1863C6.7476 12.7517 7.14763 14 8.12047 14H36.8795C37.8524 14 38.2524 12.7517 37.4608 12.1863L26 4"
-                                        stroke="#383874" stroke-width="3" stroke-linecap="round" />
-                                </svg>
-                            </div>
-                            <p class="data">8907W</p>
-                        </div>
-                        <div class="circle" id="houseOverview">
-                            <div class="svgClass">
-                                <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="6.5" y="20.5" width="32" height="21" rx="4.5" stroke="#383874"
-                                        stroke-width="3" />
-                                    <path
-                                        d="M21.8972 3.45547L2.37953 18.2021C1.6142 18.7804 2.02315 20 2.98236 20H42.0176C42.9769 20 43.3858 18.7804 42.6205 18.2021L23.1028 3.45547C22.7461 3.18596 22.2539 3.18596 21.8972 3.45547Z"
-                                        stroke="#383874" stroke-width="3" />
-                                </svg>
+        <div id="dashboard" class="subcontent">
+            <h2 class="pageTitle">Dashboard</h2>
+            <div class="devider"></div>
 
-                            </div>
-                            <p class="data">679W</p>
+            <div class="container">
+                <div id="overview" class="card">
+                    <h2 class="subtitle">Overview</h2>
+                    <div id="overviewGraphic">
+                        <div class="connections">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <line class="line" x1="0" y1="0" x2="100" y2="100" />
+                                <line class="line" x1="0" y1="100" x2="100" y2="0" />
+                                <circle class="svgCircle solarCircle" cx="0" cy="0" r="3" />
+                                <circle class="svgCircle batteryCircle" cx="50" cy="50" r="3" />
+                                <circle class="svgCircle gridCircle" cx="50" cy="50" r="3" />
+                                <circle class="svgCircle houseCircle" cx="50" cy="50" r="3" />
+                            </svg>
                         </div>
+                        <div class="overviewCircles">
+                            <div class="circle" id="solarOverview">
+                                <div class="svgClass">
+                                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="3.03465" y="19.7103" width="16.0522" height="26.8441" rx="4.5"
+                                            transform="rotate(-28.5656 3.03465 19.7103)" stroke="#383874"
+                                            stroke-width="3" />
+                                        <circle cx="32.5" cy="12.5" r="3" stroke="#383874" stroke-width="3" />
+                                        <rect x="31" y="1" width="3" height="6" rx="1.5" fill="#383874" />
+                                        <rect x="23.3" y="5.41992" width="3" height="6" rx="1.5"
+                                            transform="rotate(-45 23.3 5.41992)" fill="#383874" />
+                                        <rect x="39.74" y="3.5" width="3" height="6" rx="1.5"
+                                            transform="rotate(45 39.74 3.5)" fill="#383874" />
+                                        <rect x="27.2427" y="15" width="3" height="6" rx="1.5"
+                                            transform="rotate(45 27.2427 15)" fill="#383874" />
+                                        <rect x="35.3" y="17.4199" width="3" height="6" rx="1.5"
+                                            transform="rotate(-45 35.3 17.4199)" fill="#383874" />
+                                        <rect x="31" y="18" width="3" height="6" rx="1.5" fill="#383874" />
+                                        <rect x="38" y="11" width="6" height="3" rx="1.5" fill="#383874" />
+                                        <rect x="21" y="11" width="6" height="3" rx="1.5" fill="#383874" />
+                                    </svg>
+                                </div>
+                                <p class="data">0000W</p>
+                            </div>
+                            <div class="circle" id="batteryOverview">
+                                <div class="svgClass">
+                                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="10.5" y="30.5" width="17" height="30" rx="4.5"
+                                            transform="rotate(-90 10.5 30.5)" stroke="#383874" stroke-width="3" />
+                                        <path
+                                            d="M7 19.5H10.5V24.5H7C5.61929 24.5 4.5 23.3807 4.5 22C4.5 20.6193 5.61929 19.5 7 19.5Z"
+                                            stroke="#383874" stroke-width="3" />
+                                        <path d="M21.5 19.5V24.5" stroke="#37357B" stroke-width="3"
+                                            stroke-linecap="round" />
+                                        <path d="M16.5 19.5V24.5" stroke="#37357B" stroke-width="3"
+                                            stroke-linecap="round" />
+                                    </svg>
+                                </div>
+                                <p class="data">89%</p>
+                            </div>
+                            <div class="circle" id="inverterOverview">
+                                <div class="svgClass">
+                                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="10.5" y="4.5" width="24" height="33" rx="4.5" stroke="#383874"
+                                            stroke-width="3" />
+                                        <path
+                                            d="M16 39H21V39.5C21 40.8807 19.8807 42 18.5 42C17.1193 42 16 40.8807 16 39.5V39Z"
+                                            fill="#383874" />
+                                        <path
+                                            d="M24 39H29V39.5C29 40.8807 27.8807 42 26.5 42C25.1193 42 24 40.8807 24 39.5V39Z"
+                                            fill="#383874" />
+                                        <mask id="path-4-inside-1_13_154" fill="white">
+                                            <rect x="15" y="9" width="15" height="11" rx="2" />
+                                        </mask>
+                                        <rect x="15" y="9" width="15" height="11" rx="2" stroke="#383874"
+                                            stroke-width="6" mask="url(#path-4-inside-1_13_154)" />
+                                        <mask id="path-5-inside-2_13_154" fill="white">
+                                            <rect x="18" y="23" width="9" height="10" rx="2" />
+                                        </mask>
+                                        <rect x="18" y="23" width="9" height="10" rx="2" stroke="#383874"
+                                            stroke-width="6" mask="url(#path-5-inside-2_13_154)" />
+                                    </svg>
+                                </div>
+                                <p class="data">9.67kW</p>
+                            </div>
+                            <div class="circle" id="gridOverview">
+                                <div class="svgClass">
+                                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M16.5 8C16.5 5.51472 18.5147 3.5 21 3.5H24C26.4853 3.5 28.5 5.51472 28.5 8V28.5H16.5V8Z"
+                                            stroke="#383874" stroke-width="3" />
+                                        <rect x="10.5" y="40.5" width="12" height="25" rx="4.5"
+                                            transform="rotate(-90 10.5 40.5)" stroke="#383874" stroke-width="3" />
+                                        <path
+                                            d="M19 4L7.53923 12.1863C6.7476 12.7517 7.14763 14 8.12047 14H36.8795C37.8524 14 38.2524 12.7517 37.4608 12.1863L26 4"
+                                            stroke="#383874" stroke-width="3" stroke-linecap="round" />
+                                    </svg>
+                                </div>
+                                <p class="data">8907W</p>
+                            </div>
+                            <div class="circle" id="houseOverview">
+                                <div class="svgClass">
+                                    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="6.5" y="20.5" width="32" height="21" rx="4.5" stroke="#383874"
+                                            stroke-width="3" />
+                                        <path
+                                            d="M21.8972 3.45547L2.37953 18.2021C1.6142 18.7804 2.02315 20 2.98236 20H42.0176C42.9769 20 43.3858 18.7804 42.6205 18.2021L23.1028 3.45547C22.7461 3.18596 22.2539 3.18596 21.8972 3.45547Z"
+                                            stroke="#383874" stroke-width="3" />
+                                    </svg>
+
+                                </div>
+                                <p class="data">679W</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="element">
+                    <div id="status" class="card">
+                        <h2 class="subtitle">Status</h2>
+                        <div class="statusCircles">
+                            <div class="statusCircle" id="statusQHome"></div>
+                            <div class="statusCircle" id="statusCcu"></div>
+                            <div class="statusCircle" id="statusUnknown"></div>
+                        </div>
+                    </div>
+                    <div id="recommendation" class="card">
+                        <h2 class="subtitle">Empfelungen</h2>
+                        <table id="recommendationTable">
+                            <tr id="washRecomm">
+                                <td>Waschmaschiene</td>
+                                <td>stark</td>
+                            </tr>
+                            <tr id="dryerRecomm">
+                                <td>Trockner</td>
+                                <td>stark</td>
+                            </tr>
+                            <tr id="fryerRecomm">
+                                <td>Friteuse</td>
+                                <td>etwas</td>
+                            </tr>
+                            <tr id="ovenRecomm">
+                                <td>Backofen</td>
+                                <td>schwach</td>
+                            </tr>
+                            <tr id="climateRecomm">
+                                <td>Klimaanlage</td>
+                                <td>nein</td>
+                            </tr>
+                            <tr id="totalRecomm">
+                                <td>Insgesamt</td>
+                                <td>etwas</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="element">
-                <div id="status" class="card">
-                    <h2 class="subtitle">Status</h2>
-                    <div class="statusCircles">
-                        <div class="statusCircle" id="statusQHome"></div>
-                        <div class="statusCircle" id="statusCcu"></div>
-                        <div class="statusCircle" id="statusUnknown"></div>
-                    </div>
-                </div>
-                <div id="recommendation" class="card">
-                    <h2 class="subtitle">Empfelungen</h2>
-                    <table id="recommendationTable">
-                        <tr id="washRecomm">
-                            <td>Waschmaschiene</td>
-                            <td>stark</td>
-                        </tr>
-                        <tr id="dryerRecomm">
-                            <td>Trockner</td>
-                            <td>stark</td>
-                        </tr>
-                        <tr id="fryerRecomm">
-                            <td>Friteuse</td>
-                            <td>etwas</td>
-                        </tr>
-                        <tr id="ovenRecomm">
-                            <td>Backofen</td>
-                            <td>schwach</td>
-                        </tr>
-                        <tr id="climateRecomm">
-                            <td>Klimaanlage</td>
-                            <td>nein</td>
-                        </tr>
-                        <tr id="totalRecomm">
-                            <td>Insgesamt</td>
-                            <td>etwas</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div id="history" class="card">
-            <h2 class="subtitle">History</h2>
-            <div class="datePicker">
-                <div class="datePickerArrows">
-                    <div class="leftDatePicker datePickerArrow" onclick="changeDate(-1)"></div>
-                    <div class="rightDatePicker datePickerArrow" onclick="changeDate(1)"></div>
-                    <script>
-                        date = new Date()
-                        console.log('today: ' + date.toISOString().split('T')[0])
+            <div id="history" class="card">
+                <h2 class="subtitle">History</h2>
+                <div class="datePicker">
+                    <div class="datePickerArrows">
+                        <div class="leftDatePicker datePickerArrow" onclick="changeDate(-1)"></div>
+                        <div class="rightDatePicker datePickerArrow" onclick="changeDate(1)"></div>
+                        <script>
+                            date = new Date()
+                            console.log('today: ' + date.toISOString().split('T')[0])
 
-                        function changeDate(delta) {
-                            if (
-                                date.getFullYear() === new Date().getFullYear() &&
-                                date.getMonth() === new Date().getMonth() &&
-                                date.getDate() === new Date().getDate() &&
-                                delta > 0
-                            ) {
-                                return
+                            function changeDate(delta) {
+                                if (
+                                    date.getFullYear() === new Date().getFullYear() &&
+                                    date.getMonth() === new Date().getMonth() &&
+                                    date.getDate() === new Date().getDate() &&
+                                    delta > 0
+                                ) {
+                                    return
+                                }
+                                date.setDate(date.getDate() + delta);
+                                loadChart(date.toISOString().split('T')[0])
+
+                                day = date.getDate();
+                                month = date.getMonth() + 1;
+                                if ((String(day)).length == 1)
+                                    day = '0' + day;
+                                if ((String(month)).length == 1)
+                                    month = '0' + month;
+
+                                document.getElementById('datePicked').innerHTML = day + '.' + month + '.'
+
+                                if (
+                                    date.getFullYear() === new Date().getFullYear() &&
+                                    date.getMonth() === new Date().getMonth() &&
+                                    date.getDate() === new Date().getDate()
+                                ) {
+                                    document.getElementById('rightDatePicker').style.visibility = 'hidden'
+                                } else {
+                                    document.getElementById('rightDatePicker').style.visibility = 'visible'
+                                }
                             }
-                            date.setDate(date.getDate() + delta);
-                            loadChart(date.toISOString().split('T')[0])
-
-                            day = date.getDate();
-                            month = date.getMonth() + 1;
+                        </script>
+                    </div>
+                    <div class="datePickerOver">
+                        <svg id="leftDatePicker" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                            <polyline points="67,16 33,50 67,84" fill="none" stroke="var(--buttonColor)"
+                                stroke-width="10" />
+                        </svg>
+                        <p id="datePicked">22.07.</p>
+                        <script>
+                            day = new Date().getDate();
+                            month = new Date().getMonth() + 1;
                             if ((String(day)).length == 1)
                                 day = '0' + day;
                             if ((String(month)).length == 1)
                                 month = '0' + month;
 
                             document.getElementById('datePicked').innerHTML = day + '.' + month + '.'
-
-                            if (
-                                date.getFullYear() === new Date().getFullYear() &&
-                                date.getMonth() === new Date().getMonth() &&
-                                date.getDate() === new Date().getDate()
-                            ) {
-                                document.getElementById('rightDatePicker').style.visibility = 'hidden'
-                            } else {
-                                document.getElementById('rightDatePicker').style.visibility = 'visible'
-                            }
-                        }
-                    </script>
-                </div>
-                <div class="datePickerOver">
-                    <svg id="leftDatePicker" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                        <polyline points="67,16 33,50 67,84" fill="none" stroke="var(--buttonColor)"
-                            stroke-width="10" />
-                    </svg>
-                    <p id="datePicked">22.07.</p>
-                    <script>
-                        day = new Date().getDate();
-                        month = new Date().getMonth() + 1;
-                        if ((String(day)).length == 1)
-                            day = '0' + day;
-                        if ((String(month)).length == 1)
-                            month = '0' + month;
-
-                        document.getElementById('datePicked').innerHTML = day + '.' + month + '.'
-                    </script>
-                    <svg style="visibility: hidden;" id="rightDatePicker" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                        <polyline points="33,16 67,50 33,84" fill="none" stroke="var(--buttonColor)"
-                            stroke-width="10" />
-                    </svg>
-                </div>
-            </div>
-            <svg fill="red" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
-                <path d="M 20 5 20 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
-                <path d="M 20 95 200 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
-                <path id="zeroYLine" d="M 20 95 200 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
-                <text text-anchor="end" id="maxY" x="18" y="5" class="unit">1</text>
-                <text text-anchor="end" id="minY" x="18" y="95" class="unit">0</text>
-                <text text-anchor="end" id="zeroY" x="18" y="95" class="unit">0</text>
-                <text x="185" y="105" class="unit">24:00</text>
-                <text x="20" y="105" class="unit">00:00</text>
-                <text x="102" y="105" class="unit">12:00</text>
-                <text text-anchor="end" id="halfY" x="18" y="50" class="unit">0.5</text>
-                <text text-anchor="end" id="negHalfY" x="18" y="50" class="unit">0.5</text>
-                <path id="halfYdash" stroke-dasharray="5,5" d="M20 50 l215 0" stroke="var(--grayColor)"
-                    stroke-width="0.5" />
-                <path id="negHalfYdash" stroke-dasharray="5,5" d="M20 50 l215 0" stroke="var(--grayColor)"
-                    stroke-width="0.5" />
-                <path stroke-dasharray="5,5" d="M110 5 l0 95" stroke="var(--grayColor)" stroke-width="0.5" />
-                <g id="lines">
-                    <polyline id="path" stroke-width="0.5" points="" fill="none" stroke="red" />
-                </g>
-
-            </svg>
-            <div id="chartSwitches" class="container">
-                <div class="element">
-                    <div class="switchContainer" id="houseSwitch">
-                        <p>Verbrauch</p>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleChart(3, this)">
-                            <span class="slider round" color="#FBB13F"></span>
-                        </label>
-                    </div>
-                    <div class="switchContainer" id="solarSwitch">
-                        <p>Produktion</p>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleChart(0, this)" checked>
-                            <span class="slider round" color="#FBB13F"></span>
-                        </label>
+                        </script>
+                        <svg style="visibility: hidden;" id="rightDatePicker" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                            <polyline points="33,16 67,50 33,84" fill="none" stroke="var(--buttonColor)"
+                                stroke-width="10" />
+                        </svg>
                     </div>
                 </div>
-                <div class="element">
-                    <div class="switchContainer" id="batterySwitch">
-                        <p>Speicher</p>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleChart(2, this)">
-                            <span class="slider round" color="#FBB13F"></span>
-                        </label>
+                <svg fill="red" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
+                    <path d="M 20 5 20 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
+                    <path d="M 20 95 200 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
+                    <path id="zeroYLine" d="M 20 95 200 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
+                    <text text-anchor="end" id="maxY" x="18" y="5" class="unit">1</text>
+                    <text text-anchor="end" id="minY" x="18" y="95" class="unit">0</text>
+                    <text text-anchor="end" id="zeroY" x="18" y="95" class="unit">0</text>
+                    <text x="185" y="105" class="unit">24:00</text>
+                    <text x="20" y="105" class="unit">00:00</text>
+                    <text x="102" y="105" class="unit">12:00</text>
+                    <text text-anchor="end" id="halfY" x="18" y="50" class="unit">0.5</text>
+                    <text text-anchor="end" id="negHalfY" x="18" y="50" class="unit">0.5</text>
+                    <path id="halfYdash" stroke-dasharray="5,5" d="M20 50 l215 0" stroke="var(--grayColor)"
+                        stroke-width="0.5" />
+                    <path id="negHalfYdash" stroke-dasharray="5,5" d="M20 50 l215 0" stroke="var(--grayColor)"
+                        stroke-width="0.5" />
+                    <path stroke-dasharray="5,5" d="M110 5 l0 95" stroke="var(--grayColor)" stroke-width="0.5" />
+                    <g id="lines">
+                        <polyline id="path" stroke-width="0.5" points="" fill="none" stroke="red" />
+                    </g>
+
+                </svg>
+                <div id="chartSwitches" class="container">
+                    <div class="element">
+                        <div class="switchContainer" id="houseSwitch">
+                            <p>Verbrauch</p>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(3, this)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
+                        <div class="switchContainer" id="solarSwitch">
+                            <p>Produktion</p>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(0, this)" checked>
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
                     </div>
-                    <div class="switchContainer" id="gridSwitch">
-                        <p>Netzstrom</p>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleChart(1, this)">
-                            <span class="slider round" color="#FBB13F"></span>
-                        </label>
+                    <div class="element">
+                        <div class="switchContainer" id="batterySwitch">
+                            <p>Speicher</p>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(2, this)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
+                        <div class="switchContainer" id="gridSwitch">
+                            <p>Netzstrom</p>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(1, this)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="house" class="card">
-            <h2 class="subtitle">House</h2>
-            <div class="cardContent">
-                <div id="overviewHouse">
-                    <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="houseDrawing">
-                            <path d="M18.5 219.5H206.5V269C206.5 273.694 202.694 277.5 198 277.5H27C22.3056 277.5 18.5 273.694 18.5 269V219.5Z" stroke="#383874" stroke-width="3"/>
-                            <rect x="18.5" y="161.5" width="188" height="58" stroke="#383874" stroke-width="3"/>
-                            <path d="M273 161.5H232C227.306 161.5 223.5 165.306 223.5 170V219.5H281.5V170C281.5 165.306 277.694 161.5 273 161.5Z" stroke="#383874" stroke-width="3"/>
-                            <rect x="18.5" y="103.5" width="188" height="58" stroke="#383874" stroke-width="3"/>
-                            <line x1="113.96" y1="23.1523" x2="17.9603" y2="103.152" stroke="#383874" stroke-width="3"/>
-                            <line x1="207.034" y1="103.147" x2="112.034" y2="23.1474" stroke="#383874" stroke-width="3"/>
-                            <line x1="1.5" y1="219.5" x2="298.5" y2="219.5" stroke="#383874" stroke-width="3" stroke-linecap="round"/>
-                        </g>
-                        <g id="deviceDots">
-                            <circle class="svgCircle" cx="175" cy="250" r="8" />
-                            <circle class="svgCircle" cx="253" cy="190" r="8" />
-                        </g>
+            <div id="house" class="card">
+                <h2 class="subtitle">House</h2>
+                <div class="cardContent">
+                    <div id="overviewHouse">
+                        <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="houseDrawing">
+                                <path
+                                    d="M18.5 219.5H206.5V269C206.5 273.694 202.694 277.5 198 277.5H27C22.3056 277.5 18.5 273.694 18.5 269V219.5Z"
+                                    stroke="#383874" stroke-width="3" />
+                                <rect x="18.5" y="161.5" width="188" height="58" stroke="#383874" stroke-width="3" />
+                                <path
+                                    d="M273 161.5H232C227.306 161.5 223.5 165.306 223.5 170V219.5H281.5V170C281.5 165.306 277.694 161.5 273 161.5Z"
+                                    stroke="#383874" stroke-width="3" />
+                                <rect x="18.5" y="103.5" width="188" height="58" stroke="#383874" stroke-width="3" />
+                                <line x1="113.96" y1="23.1523" x2="17.9603" y2="103.152" stroke="#383874"
+                                    stroke-width="3" />
+                                <line x1="207.034" y1="103.147" x2="112.034" y2="23.1474" stroke="#383874"
+                                    stroke-width="3" />
+                                <line x1="1.5" y1="219.5" x2="298.5" y2="219.5" stroke="#383874" stroke-width="3"
+                                    stroke-linecap="round" />
+                            </g>
+                            <g id="deviceDots">
+                                <circle class="svgCircle" cx="175" cy="250" r="8" />
+                                <circle class="svgCircle" cx="253" cy="190" r="8" />
+                            </g>
                         </svg>
 
+                    </div>
+                    <div id="overviewHouseSwitches">
+                        <div class="switchContainer" id="">
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(2, this)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                            <p>E-Bikes</p>
+                            <p class="data">3W</p>
+                        </div>
+                        <div class="switchContainer" id="">
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(2, this)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                            <p>E-Bikes</p>
+                            <p class="data">3W</p>
+                        </div>
+                        <div class="switchContainer" id="">
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(2, this)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                            <p>E-Bikes</p>
+                            <p class="data">3W</p>
+                        </div>
+                    </div>
                 </div>
-                <div id="overviewHouseSwitches">
-                    <div class="switchContainer" id="">
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleChart(2, this)">
-                            <span class="slider round" color="#FBB13F"></span>
-                        </label>
-                        <p>E-Bikes</p>
-                        <p class="data">3W</p>
-                    </div>
-                    <div class="switchContainer" id="">
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleChart(2, this)">
-                            <span class="slider round" color="#FBB13F"></span>
-                        </label>
-                        <p>E-Bikes</p>
-                        <p class="data">3W</p>
-                    </div>
-                    <div class="switchContainer" id="">
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleChart(2, this)">
-                            <span class="slider round" color="#FBB13F"></span>
-                        </label>
-                        <p>E-Bikes</p>
-                        <p class="data">3W</p>
-                    </div>
-                </div>
+
             </div>
-
         </div>
-
-
+        <div id="homematic" class="subcontent">
+            <h2 class="pageTitle">Homematic</h2>
+            <div class="devider"></div>
+            <button>rollo</button>
+        </div>
+        <div id="felix" class="subcontent">
+            <h2 class="pageTitle">Felix</h2>
+            <div class="devider"></div>
+        </div>
     </div>
 </body>
 

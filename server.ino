@@ -3,17 +3,6 @@ void initializeServer()
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(SPIFFS, "/index.html", String(), false, processor); });
 
-    server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request)
-              {
-        String PARAM_MESSAGE = "message";
-        String message;
-        if (request->hasParam(PARAM_MESSAGE)) {
-            message = request->getParam(PARAM_MESSAGE)->value();
-        } else {
-            message = "No message sent";
-        }
-        request->send(200, "text/plain", "Hello, GET: " + message); });
-
     server.on("/api", HTTP_GET, [](AsyncWebServerRequest *request)
               {
         if (!(request->hasParam("type")))
@@ -27,7 +16,22 @@ void initializeServer()
         {
             String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", "H34B12H6157017"}};
             request->send(200, "text/plain", createJsonFrom2dArray(config, 3));
-        } 
+        } else if(type == "sethm"){
+            if (!(request->hasParam("deviceid")))
+            {
+                request->send(200, "text/plain", "{\"error\":\"no deviceId specified\", \"data\": {}");
+                return;
+            }
+            if (!(request->hasParam("state")))
+            {
+                request->send(200, "text/plain", "{\"error\":\"no state specified\", \"data\": {}");
+                return;
+            }
+            String deviceId = request->getParam("deviceId")->value();
+            String state = request->getParam("state")->value();
+            postRequest("http://ccu3-whv/esp/system.htm?sid=%40" + ccuToken + "%40", "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "multipart/form-data");
+            request->send(200, "text/plain", "success");
+        }
         request->send(200, "text/plain", "{\"error\":\"no valid type\", \"data\": {}"); });
 
     server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -48,6 +52,9 @@ void initializeServer()
     server.on("/recommendation.js", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(SPIFFS, "/recommendation.js", "text/javascript"); });
 
+    server.on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/main.js", "text/javascript"); });
+
     server.begin();
 }
 
@@ -61,7 +68,7 @@ String processor(const String &var)
     return String();
 }
 
-String postRequest(String url, String data, String token)
+String postRequest(String url, String data, String token, String contentType)
 {
     Serial.println("post req: " + url + " data: " + data + " token: " + token);
 
@@ -72,7 +79,7 @@ String postRequest(String url, String data, String token)
     http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
 
     // Specify content-type header
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    http.addHeader("Content-Type", contentType);
     if (token != "")
     {
         Serial.println("added token: " + token);
@@ -106,8 +113,14 @@ String postRequest(String url, String data, String token)
 
 String getNewQHomeToken()
 {
-    String login = postRequest("https://qhome-ess-g3.q-cells.eu/phoebus/login/loginNew", "username=" + String(qHome_usr) + "&userpwd=" + String(qHome_pwd), "");
+    String login = postRequest("https://qhome-ess-g3.q-cells.eu/phoebus/login/loginNew", "username=" + String(qHome_usr) + "&userpwd=" + String(qHome_pwd), "", "application/x-www-form-urlencoded");
     return login.substring(login.indexOf("token") + 8, login.indexOf("token") + 44);
+}
+
+String getNewCcuToken()
+{
+    String login = postRequest("http://192.168.178.82/login.htm", "tbUsernameShow=Admin&tbUsername=Admin&tbPassword=", "", "application/x-www-form-urlencoded");
+    return login.substring(login.indexOf("SessionId = ") + 14, login.indexOf("SessionId = ") + 24);
 }
 
 String createJsonFrom2dArray(String array[][2], int size)

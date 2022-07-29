@@ -61,6 +61,8 @@ function updateCurrentUi(data) {
 
     updateDots(data)
     updateRecomms(data)
+
+    document.getElementById('lastUpdated').innerHTML = 'last updated: ' + new Date().toLocaleTimeString()
 }
 
 function setChart(data) {
@@ -112,3 +114,8 @@ dataQHome = []
 
 getQHomeData(qHomeToken, inverterSn, '', setCurrent)
 getQHomeData(qHomeToken, inverterSn, new Date().toISOString().split('T')[0], setChart)
+
+window.setInterval(function() {
+    getQHomeData(qHomeToken, inverterSn, '', setCurrent)
+    getQHomeData(qHomeToken, inverterSn, date.toISOString().split('T')[0], setChart)
+}, 1000 * 60);

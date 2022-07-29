@@ -10,8 +10,8 @@ AsyncWebServer server(80);
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-String gridPowerCcu = "{\"ts\":0,\"v\":0,\"s\":0}";
 String qHomeToken;
+String ccuToken;
 
 void setup()
 {
@@ -36,8 +36,9 @@ void setup()
     Serial.println("Connected to the WiFi network: " + String(ssid) + " with ip: " + String(WiFi.localIP()));
 
     initializeServer();
-    initializeMqtt();
+    // initializeMqtt();
     qHomeToken = getNewQHomeToken();
+    ccuToken = getNewCcuToken();
 }
 
 void loop(){
