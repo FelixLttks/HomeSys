@@ -459,3 +459,9 @@ input:checked+.slider:before {
     width: 100%;
     height: 100%;
 }
+
+#homematic p {
+    width: 10rem;
+    color: var(--fontColor2);
+    font-size: 1.25rem;
+}

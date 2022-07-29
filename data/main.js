@@ -11,5 +11,5 @@ function openSubContent(name, btn) {
 }
 
 function setHm(deviceId, state) {
-    httpGet('/api?type=sethm&deviceId=' + deviceId + '&state=' + state)
+    httpGet('/api?type=sethm&deviceid=' + deviceId + '&state=' + state)
 }

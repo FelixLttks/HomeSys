@@ -24,7 +24,7 @@
 
 <body>
     <div id="sideMenu">
-        <h1 class="title">Luttkus</h1>
+        <h1 class="title">Energy hub</h1>
         <div class="pageMenu">
             <div class="navBtn selected" onclick="openSubContent('dashboard', this)"><span>Dashboard</span></div>
             <div class="navBtn" onclick="openSubContent('homematic', this)"><span>Homematic</span></div>
@@ -370,11 +370,48 @@
         <div id="homematic" class="subcontent">
             <h2 class="pageTitle">Homematic</h2>
             <div class="devider"></div>
-            <button>rollo</button>
+            <div class="card">
+                <div id="" class="container">
+                    <div class="element">
+                        <div class="switchContainer" id="houseSwitch">
+                            <p>Gartenwasser</p>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(3, this)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
+                        <div class="switchContainer" id="solarSwitch">
+                            <p>Produktion</p>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(0, this)" checked>
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="switchContainer" id="batterySwitch">
+                            <p>Speicher</p>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(2, this)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
+                        <div class="switchContainer" id="gridSwitch">
+                            <p>Netzstrom</p>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleChart(1, this)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="setHm(4521, 0)">rollo</button>
         </div>
         <div id="felix" class="subcontent">
-            <h2 class="pageTitle">Felix</h2>
+            <h2 class="pageTitle">Felix' Panel</h2>
             <div class="devider"></div>
+
         </div>
     </div>
 </body>

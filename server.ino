@@ -14,7 +14,7 @@ void initializeServer()
         String type = request->getParam("type")->value();
         if (type == "config")
         {
-            String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", "H34B12H6157017"}};
+            String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", inverter_sn}};
             request->send(200, "text/plain", createJsonFrom2dArray(config, 3));
         } else if(type == "sethm"){
             if (!(request->hasParam("deviceid")))
@@ -27,9 +27,15 @@ void initializeServer()
                 request->send(200, "text/plain", "{\"error\":\"no state specified\", \"data\": {}");
                 return;
             }
-            String deviceId = request->getParam("deviceId")->value();
+            String deviceId = request->getParam("deviceid")->value();
             String state = request->getParam("state")->value();
-            postRequest("http://ccu3-whv/esp/system.htm?sid=%40" + ccuToken + "%40", "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "multipart/form-data");
+            String success = postRequest("http://" + ccu3 + "/esp/system.htm?sid=%40" + ccuToken + "%40", "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "text/plain");
+            success.trim();
+            Serial.println(success);
+            if(success != "true"){
+                ccuToken = getNewCcuToken();
+                postRequest("http://" + ccu3 + "/esp/system.htm?sid=%40" + ccuToken + "%40", "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "text/plain");
+            }
             request->send(200, "text/plain", "success");
         }
         request->send(200, "text/plain", "{\"error\":\"no valid type\", \"data\": {}"); });
@@ -99,7 +105,7 @@ String postRequest(String url, String data, String token, String contentType)
         Serial.print("length: ");
         Serial.println(response.length());                                 // Get the response to the request
         Serial.println("post req: " + url + " code: " + httpResponseCode); // Print return code
-        Serial.println(response);                                          // Print request answer
+        // Serial.println(response);                                          // Print request answer
         return response;
     }
     else
@@ -120,7 +126,9 @@ String getNewQHomeToken()
 String getNewCcuToken()
 {
     String login = postRequest("http://192.168.178.82/login.htm", "tbUsernameShow=Admin&tbUsername=Admin&tbPassword=", "", "application/x-www-form-urlencoded");
-    return login.substring(login.indexOf("SessionId = ") + 14, login.indexOf("SessionId = ") + 24);
+    String token = login.substring(login.indexOf("SessionId = ") + 14, login.indexOf("SessionId = ") + 24);
+    Serial.println("new token: " + token);
+    return token;
 }
 
 String createJsonFrom2dArray(String array[][2], int size)
