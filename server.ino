@@ -29,12 +29,12 @@ void initializeServer()
             }
             String deviceId = request->getParam("deviceid")->value();
             String state = request->getParam("state")->value();
-            String success = postRequest("http://" + ccu3 + "/esp/system.htm?sid=%40" + ccuToken + "%40", "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "text/plain");
+            String success = postRequest("http://" + String(ccu3) + "/esp/system.htm?sid=%40" + ccuToken + "%40", "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "text/plain");
             success.trim();
             Serial.println(success);
             if(success != "true"){
                 ccuToken = getNewCcuToken();
-                postRequest("http://" + ccu3 + "/esp/system.htm?sid=%40" + ccuToken + "%40", "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "text/plain");
+                postRequest("http://" + String(ccu3) + "/esp/system.htm?sid=%40" + ccuToken + "%40", "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "text/plain");
             }
             request->send(200, "text/plain", "success");
         }
@@ -125,7 +125,7 @@ String getNewQHomeToken()
 
 String getNewCcuToken()
 {
-    String login = postRequest("http://192.168.178.82/login.htm", "tbUsernameShow=Admin&tbUsername=Admin&tbPassword=", "", "application/x-www-form-urlencoded");
+    String login = postRequest("http://" + String(ccu3) + "/login.htm", "tbUsernameShow=Admin&tbUsername=Admin&tbPassword=", "", "application/x-www-form-urlencoded");
     String token = login.substring(login.indexOf("SessionId = ") + 14, login.indexOf("SessionId = ") + 24);
     Serial.println("new token: " + token);
     return token;
