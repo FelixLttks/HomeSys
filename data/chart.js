@@ -1,9 +1,9 @@
 datasets = []
 
-createDataset(dataQHome)
+// createDataset(dataQHome)
 
 function createDataset(data) {
-    console.log(data)
+    // console.log(data)
     datasets = [{
         label: "PV",
         color: "#FBB13F",

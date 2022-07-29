@@ -12,7 +12,7 @@ function updateDots(data) {
         gsap.timeline({
             defaults: { duration: duration, opacity: 1, ease: ease },
             repeat: -1
-        }).to('.solarCircle', { y: 50, x: 50 })
+        }).to('.solarCircle', { y: 50, x: 50 }).delay(1)
     }
 
     battery = data.bmsBatPower
@@ -46,6 +46,6 @@ function updateDots(data) {
         gsap.timeline({
             defaults: { duration: duration, opacity: 1, ease: ease },
             repeat: -1
-        }).to('.gridCircle', { y: -50, x: 50 })
+        }).to('.gridCircle', { y: -50, x: 50 }).delay(1)
     }
 }

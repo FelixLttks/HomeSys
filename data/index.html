@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js" integrity="sha512-F6rjAEKNMtM0aODcc/MdnAvhGxn7FCbAkKJ5FKba/fnD3gnN+LBEok326WAMdOhKQKYNr+j/tJEuV1PKwIfhCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/plus-jakarta-display.min.css" />
     <link rel="stylesheet" href="style.css" />
@@ -17,6 +18,7 @@
     <script src="overviewDots.js"></script>
     <script src="chart.js" defer></script>
     <script src="loadData.js"></script>
+    <script src="recommendation.js" defer></script>
 </head>
 
 <body>
@@ -150,32 +152,32 @@
                         <div class="statusCircle" id="statusUnknown"></div>
                     </div>
                 </div>
-                <div id="stats" class="card">
-                    <h2 class="subtitle">Stats</h2>
-                    <table id="statsTable">
-                        <tr id="consumptionStat">
-                            <td>Verbrauch</td>
-                            <td>00kW</td>
+                <div id="recommendation" class="card">
+                    <h2 class="subtitle">Empfelungen</h2>
+                    <table id="recommendationTable">
+                        <tr id="washRecomm">
+                            <td>Waschmaschiene</td>
+                            <td>stark</td>
                         </tr>
-                        <tr id="productionStat">
-                            <td>Produktion</td>
-                            <td>10728W</td>
+                        <tr id="dryerRecomm">
+                            <td>Trockner</td>
+                            <td>stark</td>
                         </tr>
-                        <tr id="dailyYieldStat">
-                            <td>Tagesertrag</td>
-                            <td>21.9kWk</td>
+                        <tr id="fryerRecomm">
+                            <td>Friteuse</td>
+                            <td>etwas</td>
                         </tr>
-                        <tr id="monthlyYieldStat">
-                            <td>Monatsertrag</td>
-                            <td>189.7kWh</td>
+                        <tr id="ovenRecomm">
+                            <td>Backofen</td>
+                            <td>schwach</td>
                         </tr>
-                        <tr id="totalYieldStat">
-                            <td>Gesamtertrag</td>
-                            <td>598kWh</td>
+                        <tr id="climateRecomm">
+                            <td>Klimaanlage</td>
+                            <td>nein</td>
                         </tr>
-                        <tr id="temperatureStat">
-                            <td>Temperatur</td>
-                            <td>50°C</td>
+                        <tr id="totalRecomm">
+                            <td>Insgesamt</td>
+                            <td>etwas</td>
                         </tr>
                     </table>
                 </div>
@@ -280,7 +282,7 @@
                     <div class="switchContainer" id="solarSwitch">
                         <p>Produktion</p>
                         <label class="switch">
-                            <input type="checkbox" onchange="toggleChart(0, this)">
+                            <input type="checkbox" onchange="toggleChart(0, this)" checked>
                             <span class="slider round" color="#FBB13F"></span>
                         </label>
                     </div>
@@ -302,6 +304,56 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="house" class="card">
+            <h2 class="subtitle">House</h2>
+            <div class="cardContent">
+                <div id="overviewHouse">
+                    <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="houseDrawing">
+                            <path d="M18.5 219.5H206.5V269C206.5 273.694 202.694 277.5 198 277.5H27C22.3056 277.5 18.5 273.694 18.5 269V219.5Z" stroke="#383874" stroke-width="3"/>
+                            <rect x="18.5" y="161.5" width="188" height="58" stroke="#383874" stroke-width="3"/>
+                            <path d="M273 161.5H232C227.306 161.5 223.5 165.306 223.5 170V219.5H281.5V170C281.5 165.306 277.694 161.5 273 161.5Z" stroke="#383874" stroke-width="3"/>
+                            <rect x="18.5" y="103.5" width="188" height="58" stroke="#383874" stroke-width="3"/>
+                            <line x1="113.96" y1="23.1523" x2="17.9603" y2="103.152" stroke="#383874" stroke-width="3"/>
+                            <line x1="207.034" y1="103.147" x2="112.034" y2="23.1474" stroke="#383874" stroke-width="3"/>
+                            <line x1="1.5" y1="219.5" x2="298.5" y2="219.5" stroke="#383874" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                        <g id="deviceDots">
+                            <circle class="svgCircle" cx="175" cy="250" r="8" />
+                            <circle class="svgCircle" cx="253" cy="190" r="8" />
+                        </g>
+                        </svg>
+
+                </div>
+                <div id="overviewHouseSwitches">
+                    <div class="switchContainer" id="">
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleChart(2, this)">
+                            <span class="slider round" color="#FBB13F"></span>
+                        </label>
+                        <p>E-Bikes</p>
+                        <p class="data">3W</p>
+                    </div>
+                    <div class="switchContainer" id="">
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleChart(2, this)">
+                            <span class="slider round" color="#FBB13F"></span>
+                        </label>
+                        <p>E-Bikes</p>
+                        <p class="data">3W</p>
+                    </div>
+                    <div class="switchContainer" id="">
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleChart(2, this)">
+                            <span class="slider round" color="#FBB13F"></span>
+                        </label>
+                        <p>E-Bikes</p>
+                        <p class="data">3W</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
 

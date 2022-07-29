@@ -57,8 +57,10 @@ function updateCurrentUi(data) {
     document.getElementById('batteryOverview').querySelector('.data').innerHTML = data.batteryCapacity + '%'
     document.getElementById('gridOverview').querySelector('.data').innerHTML = Math.abs(data.feedinpower) + 'W'
     document.getElementById('houseOverview').querySelector('.data').innerHTML = (data.powerdc1 + data.powerdc2 - data.feedinpower - data.batPower1) + 'W'
+    document.getElementById('inverterOverview').querySelector('.data').innerHTML = data.gridpower + 'W'
 
     updateDots(data)
+    updateRecomms(data)
 }
 
 function setChart(data) {
@@ -79,7 +81,10 @@ function setChart(data) {
     if (document.readyState === 'complete') {
         createDataset(dataQHome)
     }
-    console.log(dataQHome)
+    document.addEventListener("DOMContentLoaded", function(event) {
+        createDataset(dataQHome)
+    });
+    // console.log(dataQHome)
 }
 
 function loadChart(date) {
@@ -95,7 +100,15 @@ inverterSn = config.inverter_sn
 
 console.log('qHomeToken: ' + qHomeToken)
 
+if (qHomeToken != '') {
+    document.addEventListener("DOMContentLoaded", function(event) {
+        document.getElementById('statusQHome').style.backgroundColor = '#11AB73'
+    });
+} else {
+    console.log('empty qHomeToken')
+}
+
 dataQHome = []
 
 getQHomeData(qHomeToken, inverterSn, '', setCurrent)
-getQHomeData(qHomeToken, inverterSn, '2022-07-28', setChart)
+getQHomeData(qHomeToken, inverterSn, new Date().toISOString().split('T')[0], setChart)

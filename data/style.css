@@ -199,6 +199,10 @@ html {
     top: 3.5rem;
 }
 
+.connections circle {
+    fill: #FBB13F;
+}
+
 .line {
     stroke: var(--elementColor);
     stroke-width: 1.5%;
@@ -217,25 +221,25 @@ html {
     margin-left: 1rem;
 }
 
-#stats {
+#recommendation {
     height: calc(100% - 6.5rem);
     position: absolute;
     width: 100%;
     color: var(--fontColor2);
 }
 
-#stats table tr td {
+#recommendation table tr td {
     width: 100%;
     color: var(--fontColor2);
     font-size: 1.25rem;
     height: 2rem;
 }
 
-#stats table td:nth-child(2) {
+#recommendation table td:nth-child(2) {
     text-align: end;
 }
 
-#stats .subtitle,
+#recommendation .subtitle,
 #history .subtitle {
     margin-bottom: 1rem;
 }
@@ -372,7 +376,7 @@ html {
     background-color: #fb3ff2;
 }
 
-#chartSwitches input:checked+.slider:before {
+input:checked+.slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
@@ -396,6 +400,48 @@ html {
 
 #chartSwitches p {
     width: 10rem;
+    color: var(--fontColor2);
+    font-size: 1.25rem;
+}
+
+#house {
+    margin-top: 2.5rem;
+}
+
+#house input:checked+.slider {
+    background-color: #3ccf2c;
+}
+
+#overviewHouse {
+    width: 100%;
+    /* height: 3rem; */
+    aspect-ratio: 1 / 1;
+    /* background-color: beige; */
+}
+
+.cardContent {
+    display: flex;
+    gap: 2.5rem;
+}
+
+#overviewHouse svg {
+    width: 100%;
+    height: 100%;
+}
+
+#overviewHouse circle {
+    fill: red;
+}
+
+#overviewHouseSwitches {
+    width: 100%;
+    /* background-color: beige; */
+}
+
+#overviewHouseSwitches .switchContainer {
+    width: 100%;
+    /* background-color: red; */
+    justify-content: space-between;
     color: var(--fontColor2);
     font-size: 1.25rem;
 }

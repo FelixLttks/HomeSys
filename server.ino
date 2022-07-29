@@ -42,6 +42,12 @@ void initializeServer()
     server.on("/overviewDots.js", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(SPIFFS, "/overviewDots.js", "text/javascript"); });
 
+    server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/favicon.png", "image/png"); });
+
+    server.on("/recommendation.js", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/recommendation.js", "text/javascript"); });
+
     server.begin();
 }
 
