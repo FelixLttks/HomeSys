@@ -17,9 +17,9 @@ function setRecomm(elementId, degree) {
 function updateRecomms(data) {
     var times = SunCalc.getTimes(new Date(), 49.481220, 11.071675);
     var hoursSunset = (times.sunset - new Date()) / 36e5;
-    console.log('sunset in (h): ' + hoursSunset)
+    // console.log('sunset in (h): ' + hoursSunset)
     var hoursSunrise = (times.sunrise - new Date()) / 36e5;
-    console.log('sunrise in (h): ' + hoursSunrise)
+    // console.log('sunrise in (h): ' + hoursSunrise)
 
     if (data.feedinpower > 500 && hoursSunset > 2 && hoursSunrise < -2) {
         setRecomm('washRecomm', 2)

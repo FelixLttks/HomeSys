@@ -336,6 +336,19 @@ html {
     height: 0;
 }
 
+.button {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--elementColor);
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+
 .slider {
     position: absolute;
     cursor: pointer;
@@ -460,8 +473,54 @@ input:checked+.slider:before {
     height: 100%;
 }
 
-#homematic p {
+#homematic .card p {
     width: 10rem;
     color: var(--fontColor2);
     font-size: 1.25rem;
+}
+
+#homematic .switch input:checked+.slider {
+    background-color: #3ccf2c;
+}
+
+
+/* #hmRollo .switch {
+    transform: rotate(90deg);
+} */
+
+.btn {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.btn input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.shutters {
+    /* background-color: red; */
+    display: flex;
+    gap: 10px;
+}
+
+.shutterArrow {
+    width: 60px;
+    height: 34px;
+    /* background-color: #383874; */
+    background-color: var(--elementColor);
+    border-radius: 100px;
+}
+
+#hmsuccess {
+    position: fixed;
+    right: 2.5rem;
+    bottom: 2.5rem;
+    /* width: 100%; */
+    text-align: center;
+    color: var(--fontColor2);
+    visibility: hidden;
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Energy</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
@@ -367,46 +368,71 @@
 
             </div>
         </div>
-        <div id="homematic" class="subcontent">
+        <div id="homematic" class="subcontent" style="display: none;">
             <h2 class="pageTitle">Homematic</h2>
             <div class="devider"></div>
             <div class="card">
                 <div id="" class="container">
                     <div class="element">
-                        <div class="switchContainer" id="houseSwitch">
-                            <p>Gartenwasser</p>
+                        <div class="switchContainer" id="hmGardenwater">
+                            <p>Garage</p>
+                            <label class="btn">
+                                <input type="checkbox" onclick="setHm(17009, 'exe')">
+                                <span class="button" color="#FBB13F">
+                                    <svg width="60" height="34" viewBox="0 0 60 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M25.5 6L33.6716 14.1716C35.2337 15.7337 35.2337 18.2663 33.6716 19.8284L25.5 28" stroke="#6266EB" stroke-width="5"/>
+                                        </svg>
+                                        
+                                        
+                                </span>
+                            </label>
+                        </div>
+                        <div class="switchContainer" id="hmTest">
+                            <p>Flutlicht</p>
                             <label class="switch">
-                                <input type="checkbox" onchange="toggleChart(3, this)">
+                                <input type="checkbox" onclick="setHm(15600, this.checked)" checked>
                                 <span class="slider round" color="#FBB13F"></span>
                             </label>
                         </div>
-                        <div class="switchContainer" id="solarSwitch">
-                            <p>Produktion</p>
+                        <div class="switchContainer" id="hmTest">
+                            <p>Terassenlicht</p>
                             <label class="switch">
-                                <input type="checkbox" onchange="toggleChart(0, this)" checked>
+                                <input type="checkbox" onclick="setHm(8195, this.checked)" checked>
                                 <span class="slider round" color="#FBB13F"></span>
                             </label>
                         </div>
                     </div>
                     <div class="element">
-                        <div class="switchContainer" id="batterySwitch">
-                            <p>Speicher</p>
-                            <label class="switch">
-                                <input type="checkbox" onchange="toggleChart(2, this)">
-                                <span class="slider round" color="#FBB13F"></span>
-                            </label>
+                        <div class="switchContainer" id="hmRollo">
+                            <p>Rollo Terasse</p>
+                            <div class="shutters">
+                                <div class="shutterArrow" onclick="setHm(1782, 100)">
+                                    <svg width="60" height="34" viewBox="0 0 60 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 22.5L28.1716 14.3284C29.7337 12.7663 32.2663 12.7663 33.8284 14.3284L42 22.5" stroke="#6266EB" stroke-width="5"/>
+                                        </svg>
+
+                                </div>
+                                <div class="shutterArrow" onclick="setHm(1782, 0)">
+                                    <svg width="60" height="34" viewBox="0 0 60 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M42 11.5L33.8284 19.6716C32.2663 21.2337 29.7337 21.2337 28.1716 19.6716L20 11.5" stroke="#6266EB" stroke-width="5"/>
+                                        </svg>
+
+                                </div>
+                            </div>
+
                         </div>
                         <div class="switchContainer" id="gridSwitch">
-                            <p>Netzstrom</p>
+                            <p>Gartenwasser</p>
                             <label class="switch">
-                                <input type="checkbox" onchange="toggleChart(1, this)">
+                                <input type="checkbox" onclick="this.checked ? setHm(16999 , 'exe') : setHm(15590, false)">
                                 <span class="slider round" color="#FBB13F"></span>
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
-            <button onclick="setHm(4521, 0)">rollo</button>
+            <p id="hmSuccess">test</p>
+
             <!-- GArtenwasser sw
             Flutlicht sw
             Springbrunnen sw 
@@ -415,7 +441,7 @@
 Garagenlicht sw 
 Rollo Terassentür sw -->
         </div>
-        <div id="felix" class="subcontent">
+        <div id="felix" class="subcontent" style="display: none;">
             <h2 class="pageTitle">Felix' Panel</h2>
             <div class="devider"></div>
 

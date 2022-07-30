@@ -29,14 +29,29 @@ void initializeServer()
             }
             String deviceId = request->getParam("deviceid")->value();
             String state = request->getParam("state")->value();
-            String success = postRequest("http://" + String(ccu3) + "/esp/system.htm?sid=%40" + ccuToken + "%40", "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "text/plain");
+
+            String data = "";
+            String url = "";
+            if(state == "exe"){
+                data = "<prototypejs><![CDATA[object o = dom.GetObject( " + deviceId + " );if( o ){  o.ProgramExecute();}]]></prototypejs>:";
+                url = "http://" + String(ccu3) + "/esp/exec.htm?sid=%40" + ccuToken + "%40";
+            }
+            else if( state == "true" || state == "false"){
+                data = "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = " + state + ";]]></prototypejs>: ";
+                url = "http://" + String(ccu3) + "/esp/system.htm?sid=%40" + ccuToken + "%40";
+            }
+            else{
+                data = "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ";
+                url = "http://" + String(ccu3) + "/esp/system.htm?sid=%40" + ccuToken + "%40";
+            }
+            String success = postRequest(url, data, "", "text/plain");
             success.trim();
             Serial.println(success);
-            if(success != "true"){
+            if( (success != "true" && state != "exe") || (state == "exe" && success != "")){
                 ccuToken = getNewCcuToken();
-                postRequest("http://" + String(ccu3) + "/esp/system.htm?sid=%40" + ccuToken + "%40", "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "text/plain");
+                success = postRequest(url, "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "text/plain");
             }
-            request->send(200, "text/plain", "success");
+            request->send(200, "text/plain", (!((success != "true" && state != "exe") || (state == "exe" && success != ""))) ? "true" : "false");
         }
         request->send(200, "text/plain", "{\"error\":\"no valid type\", \"data\": {}"); });
 

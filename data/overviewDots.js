@@ -64,8 +64,7 @@ function updateDots(data) {
             x: 50,
             repeat: -1,
             duration: duration,
-            ease: ease,
-            delay: duration / 2
+            ease: ease
         })
 
     }

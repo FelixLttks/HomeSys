@@ -1,4 +1,4 @@
-function httpGet(theUrl) {
+function httpGet(theUrl, handleResponse) {
     console.log('GET req: ' + theUrl)
     let xmlhttp;
 
@@ -8,10 +8,20 @@ function httpGet(theUrl) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("GET", theUrl, false);
+    if (handleResponse != null) {
+        xmlhttp.addEventListener("readystatechange", function() {
+            if (this.readyState === this.DONE) {
+                handleResponse(this.responseText);
+            }
+        });
+    }
+
+    xmlhttp.open("GET", theUrl, handleResponse != null);
     xmlhttp.send();
 
-    return xmlhttp.response;
+    if (handleResponse == null) {
+        return xmlhttp.response;
+    }
 }
 
 function getQHomeData(token, inverter_sn, date, handleData) {
@@ -94,7 +104,7 @@ function loadChart(date) {
     getQHomeData(qHomeToken, inverterSn, date, setChart)
 }
 
-config = JSON.parse(httpGet("/api?type=config"))
+config = JSON.parse(httpGet("/api?type=config", null))
 console.log(config)
 
 qHomeToken = config.qHomeToken
