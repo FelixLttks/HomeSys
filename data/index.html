@@ -401,6 +401,13 @@
                                 <span class="slider round" color="#FBB13F"></span>
                             </label>
                         </div>
+                        <div class="switchContainer" id="gridSwitch">
+                            <p>Garagenlicht</p>
+                            <label class="switch">
+                                <input type="checkbox" onclick="this.checked ? setHm(17029 , 'exe') : setHm(7471, false)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
                     </div>
                     <div class="element">
                         <div class="switchContainer" id="hmRollo">
@@ -428,6 +435,13 @@
                                 <span class="slider round" color="#FBB13F"></span>
                             </label>
                         </div>
+                        <div class="switchContainer" id="gridSwitch">
+                            <p>Springbrunnen</p>
+                            <label class="switch">
+                                <input type="checkbox" onclick="this.checked ? setHm(17019 , 'exe') : setHm(15602, false)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -444,6 +458,8 @@ Rollo Terassentür sw -->
         <div id="felix" class="subcontent" style="display: none;">
             <h2 class="pageTitle">Felix' Panel</h2>
             <div class="devider"></div>
+
+            <button onclick="httpGet('http\://ccu3-whv/addons/xmlapi/statechange.cgi?ise_id=7800&new_value=true', null)">licht</button>
 
         </div>
     </div>

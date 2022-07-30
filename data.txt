@@ -1,0 +1,10 @@
+name            id      dpid    program
+
+Licht Felix     7800    
+Garage                          17009
+Flutlicht               15600
+Terassenlicht           8195
+Garagenlicht            7471    17029
+Rollo Terasse           1782
+Gartenwasser            15590   16999
+Springbrunnen           15602   17019

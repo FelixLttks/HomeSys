@@ -11,7 +11,12 @@ function openSubContent(name, btn) {
 }
 
 function setHm(deviceId, state) {
-    httpGet('/api?type=sethm&deviceid=' + deviceId + '&state=' + state, handleHmResponse)
+    // httpGet('/api?type=sethm&deviceid=' + deviceId + '&state=' + state, handleHmResponse)
+
+    document.getElementById('hmSuccess').style.visibility = 'visible'
+    setTimeout(function() {
+        document.getElementById('hmSuccess').style.visibility = 'hidden'
+    }, 3000); //run this after 3 seconds
 }
 
 function handleHmResponse(data) {
