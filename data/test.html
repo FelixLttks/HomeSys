@@ -1,0 +1,46 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    test
+
+    <script>
+        theUrl = '/api'
+        handleResponse = null
+        console.log('GET req: ' + theUrl)
+        let xmlhttp;
+
+        if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        if (handleResponse != 'return' && handleResponse != null) {
+            xmlhttp.addEventListener("readystatechange", function() {
+                if (this.readyState === this.DONE) {
+                    handleResponse(this.responseText);
+                }
+            });
+        }
+
+        // xy() true
+        // null true
+        // 'return' false
+
+        xmlhttp.open("GET", theUrl, handleResponse != 'return');
+        xmlhttp.send();
+
+        if (handleResponse == 'return') {
+            console.log(xmlhttp.response);
+        }
+    </script>
+</body>
+
+</html>

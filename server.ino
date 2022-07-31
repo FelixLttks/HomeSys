@@ -1,7 +1,9 @@
 void initializeServer()
 {
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-              { request->send(SPIFFS, "/index.html", String(), false, processor); });
+              { 
+                Serial.println("server: /");
+                request->send(SPIFFS, "/index.html", "text/html"); });
 
     server.on("/api", HTTP_GET, [](AsyncWebServerRequest *request)
               {
@@ -10,6 +12,7 @@ void initializeServer()
                 //  valuereached    name
                 //                  value
                 //  startautomation device
+                Serial.println("server: /api");
         if (!(request->hasParam("type")))
         {
             request->send(200, "text/plain", "{\"error\":\"no type specified\", \"data\": {}");
