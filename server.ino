@@ -5,6 +5,11 @@ void initializeServer()
 
     server.on("/api", HTTP_GET, [](AsyncWebServerRequest *request)
               {
+                //  TYPES           PARAMS
+                //  config
+                //  valuereached    name
+                //                  value
+                //  startautomation device
         if (!(request->hasParam("type")))
         {
             request->send(200, "text/plain", "{\"error\":\"no type specified\", \"data\": {}");
