@@ -1,17 +1,7 @@
-#include "WiFi.h"
-#include "ESPAsyncWebServer.h"
-#include "SPIFFS.h"
-#include <PubSubClient.h>
-#include <HTTPClient.h>
-
-#include "config.h"
 
 AsyncWebServer server(80);
-WiFiClient espClient;
-PubSubClient client(espClient);
 
 String qHomeToken;
-String ccuToken;
 
 void setup()
 {
@@ -36,11 +26,8 @@ void setup()
     Serial.println("Connected to the WiFi network: " + String(ssid) + " with ip: " + String(WiFi.localIP()));
 
     initializeServer();
-    // initializeMqtt();
     qHomeToken = getNewQHomeToken();
-    ccuToken = getNewCcuToken();
 }
 
 void loop(){
-    client.loop();
 }

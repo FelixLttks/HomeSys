@@ -16,42 +16,34 @@ void initializeServer()
         {
             String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", inverter_sn}};
             request->send(200, "text/plain", createJsonFrom2dArray(config, 3));
-        } else if(type == "sethm"){
-            if (!(request->hasParam("deviceid")))
+        } else if(type == "valuereached"){
+            if (!(request->hasParam("name")))
             {
-                request->send(200, "text/plain", "{\"error\":\"no deviceId specified\", \"data\": {}");
+                request->send(200, "text/plain", "{\"error\":\"no name specified\", \"data\": {}");
                 return;
             }
-            if (!(request->hasParam("state")))
+            if (!(request->hasParam("value")))
             {
-                request->send(200, "text/plain", "{\"error\":\"no state specified\", \"data\": {}");
+                request->send(200, "text/plain", "{\"error\":\"no value specified\", \"data\": {}");
                 return;
             }
-            String deviceId = request->getParam("deviceid")->value();
-            String state = request->getParam("state")->value();
+            String name = request->getParam("name")->value();
+            String value = request->getParam("value")->value();
+            Serial.println("valuereached: " + name + ": " + value);
 
-            String data = "";
-            String url = "";
-            if(state == "exe"){
-                data = "<prototypejs><![CDATA[object o = dom.GetObject( " + deviceId + " );if( o ){  o.ProgramExecute();}]]></prototypejs>:";
-                url = "http://" + String(ccu3) + "/esp/exec.htm?sid=%40" + ccuToken + "%40";
+            if(name == "feedin" && value == "400"){
+                setShellyState(true);
             }
-            else if( state == "true" || state == "false"){
-                data = "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = " + state + ";]]></prototypejs>: ";
-                url = "http://" + String(ccu3) + "/esp/system.htm?sid=%40" + ccuToken + "%40";
+        } else if(type == "startautomation"){
+            if (!(request->hasParam("device")))
+            {
+                request->send(200, "text/plain", "{\"error\":\"no device specified\", \"data\": {}");
+                return;
             }
-            else{
-                data = "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ";
-                url = "http://" + String(ccu3) + "/esp/system.htm?sid=%40" + ccuToken + "%40";
+            String device = request->getParam("device")->value();
+            if(device == "washingmachine"){
+                startAutomation();
             }
-            String success = postRequest(url, data, "", "text/plain");
-            success.trim();
-            Serial.println(success);
-            if( (success != "true" && state != "exe") || (state == "exe" && success != "")){
-                ccuToken = getNewCcuToken();
-                success = postRequest(url, "<prototypejs><![CDATA[string action = 'setDpState';integer dpid = " + deviceId + ";integer iState = '" + state + "';]]></prototypejs>: ", "", "text/plain");
-            }
-            request->send(200, "text/plain", (!((success != "true" && state != "exe") || (state == "exe" && success != ""))) ? "true" : "false");
         }
         request->send(200, "text/plain", "{\"error\":\"no valid type\", \"data\": {}"); });
 
@@ -81,6 +73,17 @@ void initializeServer()
 
     server.on("/homematic.js", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(SPIFFS, "/homematic.js", "text/javascript"); });
+
+    server.on("/shelly", HTTP_GET, [](AsyncWebServerRequest *request)
+              { 
+                Serial.println("shelly submittesd");
+                request->send(200, "text/plain", "hi shelly"); });
+
+    server.on("/shellytest", HTTP_GET, [](AsyncWebServerRequest *request)
+              { 
+                Serial.println("shelly test");
+                startAutomation();
+                request->send(200, "text/plain", "startAutomation()"); });
 
     server.begin();
 }
@@ -138,18 +141,39 @@ String postRequest(String url, String data, String token, String contentType)
     return "";
 }
 
+String getRequest(String url)
+{
+    // postRequest("http://" + String(shelly_ip) + "/relay/0?turn=" + (state ? "on" : "off"), NULL , "" ,"application/x-www-form-urlencoded");
+    HTTPClient http;
+    String serverPath = url;
+
+    // Your Domain name with URL path or IP address with path
+    http.begin(serverPath.c_str());
+
+    int httpResponseCode = http.GET();
+
+    if (httpResponseCode > 0)
+    {
+        Serial.print("HTTP Response code: ");
+        Serial.println(httpResponseCode);
+        String payload = http.getString();
+        Serial.println(payload);
+        return payload;
+    }
+    else
+    {
+        Serial.print("Error code: ");
+        Serial.println(httpResponseCode);
+    }
+    // Free resources
+    http.end();
+    return "";
+}
+
 String getNewQHomeToken()
 {
     String login = postRequest("https://qhome-ess-g3.q-cells.eu/phoebus/login/loginNew", "username=" + String(qHome_usr) + "&userpwd=" + String(qHome_pwd), "", "application/x-www-form-urlencoded");
     return login.substring(login.indexOf("token") + 8, login.indexOf("token") + 44);
-}
-
-String getNewCcuToken()
-{
-    String login = postRequest("http://" + String(ccu3) + "/login.htm", "tbUsernameShow=Admin&tbUsername=Admin&tbPassword=", "", "application/x-www-form-urlencoded");
-    String token = login.substring(login.indexOf("SessionId = ") + 14, login.indexOf("SessionId = ") + 24);
-    Serial.println("new token: " + token);
-    return token;
 }
 
 String createJsonFrom2dArray(String array[][2], int size)
