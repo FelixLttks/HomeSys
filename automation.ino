@@ -1,7 +1,3 @@
-
-
-bool washingMachine = false;
-
 void setShellyState(bool state)
 {
     getRequest("http://" + String(shelly_ip) + "/relay/0?turn=" + (state ? "on" : "off"));
