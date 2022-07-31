@@ -24,6 +24,7 @@ html {
     width: 250px;
     background-color: white;
     position: fixed;
+    display: block;
 }
 
 #content {
@@ -109,7 +110,7 @@ html {
     width: 100%;
 }
 
-#overview .subtitle {
+#overview .title {
     margin-bottom: 1rem;
 }
 
@@ -580,7 +581,7 @@ input:checked+.slider:before {
     display: flex;
     flex-basis: 50%;
     flex-wrap: wrap;
-    gap: 2.5rem;
+    column-gap: 2.5rem;
 }
 
 #deviceList .switchContainer {
@@ -589,4 +590,89 @@ input:checked+.slider:before {
 
 #deviceList .switchContainer p {
     width: 14rem;
+}
+
+#mobileMenuBtn {
+    display: none;
+}
+
+@media only screen and (max-device-width: 480px) {
+    #sideMenu {
+        display: none;
+        z-index: 1;
+    }
+    #content {
+        width: 100%;
+        padding: 1rem;
+    }
+    .container {
+        flex-direction: column;
+        height: 100%;
+    }
+    .overviewCircles .circle {
+        width: 6rem;
+        height: 6rem;
+    }
+    #overview {
+        margin-bottom: 2.5rem;
+    }
+    #overview .subtitle {
+        margin-bottom: 1rem;
+    }
+    .element {
+        height: 100%;
+        height: 26.5rem;
+        /* height: auto; */
+    }
+    #recommendation {
+        height: 20rem;
+    }
+    #history>svg {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1/ 1;
+    }
+    #chartSwitches {
+        /* height: 30rem; */
+        height: auto;
+        gap: 0;
+    }
+    #chartSwitches .element {
+        height: auto;
+    }
+    #mobileMenuBtn {
+        display: block;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        z-index: 1;
+    }
+    #homematic .element {
+        height: auto;
+    }
+    .container {
+        gap: 0;
+    }
+    #roomList {
+        flex-direction: column;
+    }
+    #roomList .switchContainer {
+        width: 100%;
+    }
+    #roomOver {
+        left: 0;
+        padding: 1rem;
+    }
+    #deviceList {
+        flex-direction: column;
+    }
+    #deviceList .switchContainer {
+        width: 100%;
+    }
+    #deviceList p {
+        width: 100%;
+    }
+    #favs p {
+        width: 100%;
+    }
 }

@@ -26,6 +26,13 @@
 </head>
 
 <body>
+    <div id="mobileMenuBtn" onclick="toggleSideMenu()">
+        <svg width="60" height="34" viewBox="0 0 60 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="16" y="7" width="27" height="5" rx="2.5" fill="#6266EB"/>
+            <rect x="16" y="15" width="27" height="5" rx="2.5" fill="#6266EB"/>
+            <rect x="16" y="23" width="27" height="5" rx="2.5" fill="#6266EB"/>
+            </svg>
+    </div>
     <div id="sideMenu">
         <h1 class="title">Energy hub</h1>
         <div class="pageMenu">
@@ -34,6 +41,7 @@
             <div class="navBtn" onclick="openSubContent('felix', this)"><span>Felix</span></div>
         </div>
         <p id="lastUpdated">last updated: 19:50</p>
+
     </div>
     <div id="content">
         <div id="dashboard" class="subcontent">
@@ -374,7 +382,7 @@
             <h2 class="pageTitle">Homematic</h2>
             <div class="devider"></div>
             <div class="card">
-                <div id="" class="container">
+                <div id="favs" class="container">
                     <div class="element">
                         <div class="switchContainer" id="hmGardenwater">
                             <p>Garage</p>
@@ -390,7 +398,7 @@
                         <div class="switchContainer" id="hmTest">
                             <p>Flutlicht</p>
                             <label class="switch">
-                                <input type="checkbox" onclick="setHm(15600, this.checked)" checked>
+                                <input type="checkbox" onclick="setHm(15599, this.checked)" checked>
                                 <span class="slider round" color="#FBB13F"></span>
                             </label>
                         </div>
@@ -413,13 +421,13 @@
                         <div class="switchContainer" id="hmRollo">
                             <p>Rollo Terasse</p>
                             <div class="shutters">
-                                <div class="shutterArrow" onclick="setHm(1782, 100)">
+                                <div class="shutterArrow" onclick="setHm(1778, 100)">
                                     <svg width="60" height="34" viewBox="0 0 60 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20 22.5L28.1716 14.3284C29.7337 12.7663 32.2663 12.7663 33.8284 14.3284L42 22.5" stroke="#6266EB" stroke-width="5"/>
                                         </svg>
 
                                 </div>
-                                <div class="shutterArrow" onclick="setHm(1782, 0)">
+                                <div class="shutterArrow" onclick="setHm(1778, 0)">
                                     <svg width="60" height="34" viewBox="0 0 60 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M42 11.5L33.8284 19.6716C32.2663 21.2337 29.7337 21.2337 28.1716 19.6716L20 11.5" stroke="#6266EB" stroke-width="5"/>
                                         </svg>
@@ -438,7 +446,7 @@
                         <div class="switchContainer" id="gridSwitch">
                             <p>Springbrunnen</p>
                             <label class="switch">
-                                <input type="checkbox" onclick="setHm(7796, this.checked)">
+                                <input type="checkbox" onclick="this.checked ? setHm(17019 , 'exe') : setHm(15601, false)">
                                 <span class="slider round" color="#FBB13F"></span>
                             </label>
                         </div>

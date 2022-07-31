@@ -8,32 +8,27 @@ function openSubContent(name, btn) {
             // console.log(subcontent)
     });
     document.getElementById(name).style.display = 'block'
-}
-
-function setHm(deviceId, state) {
-    // httpGet('/api?type=sethm&deviceid=' + deviceId + '&state=' + state, handleHmResponse)
-    httpGet('http://ccu3-whv/addons/xmlapi/statechange.cgi?ise_id=' + deviceId + '&new_value=' + state, null)
-
-    document.getElementById('hmSuccess').style.visibility = 'visible'
-    setTimeout(function() {
-        document.getElementById('hmSuccess').style.visibility = 'hidden'
-    }, 3000); //run this after 3 seconds
-}
-
-function handleHmResponse(data) {
-    console.log('hm response: ' + data)
-    document.getElementById('hmSuccess').style.visibility = 'visible'
-    if (data = "true") {
-        document.getElementById('hmSuccess').innerHTML = 'submitted successfully'
-    } else {
-        document.getElementById('hmSuccess').innerHTML = 'submitting failed'
+    console.log(name)
+    console.log(rooms)
+    if (name == 'homematic' && rooms.length == 0) {
+        loadHmRooms()
     }
-
-    setTimeout(function() {
-        document.getElementById('hmSuccess').style.visibility = 'hidden'
-    }, 3000); //run this after 3 seconds
+    console.log(screen.width)
+    if (screen.width < 480) {
+        document.getElementById('sideMenu').style.display = 'none'
+    }
 }
+
 
 function isArray(what) {
     return Object.prototype.toString.call(what) === '[object Array]';
+}
+
+function toggleSideMenu() {
+    menu = document.getElementById('sideMenu')
+    if (menu.style.display == 'none') {
+        menu.style.display = 'block'
+    } else {
+        menu.style.display = 'none'
+    }
 }

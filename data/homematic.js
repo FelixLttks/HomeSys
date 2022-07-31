@@ -96,19 +96,37 @@ function createDevice(ise_id) {
 
 }
 
+
+function setHm(deviceId, state) {
+
+    if (state == 'exe') {
+        httpGet('http://ccu3-whv/addons/xmlapi/runprogram.cgi?program_id=' + deviceId, null)
+    } else {
+        httpGet('http://ccu3-whv/addons/xmlapi/statechange.cgi?ise_id=' + deviceId + '&new_value=' + state, null)
+    }
+
+    document.getElementById('hmSuccess').style.visibility = 'visible'
+    setTimeout(function() {
+        document.getElementById('hmSuccess').style.visibility = 'hidden'
+    }, 3000); //run this after 3 seconds
+}
+
+function loadHmRooms() {
+    console.log('loading hm rooms')
+    roomList = httpGet("http://ccu3-whv/addons/xmlapi/roomlist.cgi", 'return')
+        // console.log(deviceList)
+
+    roomListObj = xml2jsonObj.fromStr(roomList);
+    // console.log(deviceListObj)
+
+    rooms = roomListObj.roomList.room
+
+    for (let room = 0; room < rooms.length; room++) {
+        roomObj = rooms[room]
+        createRoom(room, roomObj['@attributes'].name)
+    }
+}
+
 rooms = []
 
-console.log(xml2jsonObj)
-
-deviceList = httpGet("http://ccu3-whv/addons/xmlapi/roomlist.cgi", 'return')
-console.log(deviceList)
-
-deviceListObj = xml2jsonObj.fromStr(deviceList);
-console.log(deviceListObj)
-
-rooms = deviceListObj.roomList.room
-
-for (let room = 0; room < rooms.length; room++) {
-    roomObj = rooms[room]
-    createRoom(room, roomObj['@attributes'].name)
-}
+// console.log(xml2jsonObj)
