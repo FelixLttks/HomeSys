@@ -76,6 +76,12 @@ void initializeServer()
     server.on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(SPIFFS, "/main.js", "text/javascript"); });
 
+    server.on("/xml2json.js", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/xml2json.js", "text/javascript"); });
+
+    server.on("/homematic.js", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/homematic.js", "text/javascript"); });
+
     server.begin();
 }
 

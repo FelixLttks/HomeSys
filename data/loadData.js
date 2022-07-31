@@ -8,7 +8,7 @@ function httpGet(theUrl, handleResponse) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    if (handleResponse != null) {
+    if (handleResponse != 'return' && handleResponse != null) {
         xmlhttp.addEventListener("readystatechange", function() {
             if (this.readyState === this.DONE) {
                 handleResponse(this.responseText);
@@ -16,10 +16,14 @@ function httpGet(theUrl, handleResponse) {
         });
     }
 
-    xmlhttp.open("GET", theUrl, handleResponse != null);
+    // xy() true
+    // null true
+    // 'return' false
+
+    xmlhttp.open("GET", theUrl, handleResponse != 'return');
     xmlhttp.send();
 
-    if (handleResponse == null) {
+    if (handleResponse == 'return') {
         return xmlhttp.response;
     }
 }
@@ -104,7 +108,7 @@ function loadChart(date) {
     getQHomeData(qHomeToken, inverterSn, date, setChart)
 }
 
-config = JSON.parse(httpGet("/api?type=config", null))
+config = JSON.parse(httpGet("/api?type=config", 'return'))
 console.log(config)
 
 qHomeToken = config.qHomeToken

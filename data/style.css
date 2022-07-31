@@ -240,7 +240,9 @@ html {
 }
 
 #recommendation .subtitle,
-#history .subtitle {
+#history .subtitle,
+#allRooms .subtitle,
+#roomOver .subtitle {
     margin-bottom: 1rem;
 }
 
@@ -473,7 +475,8 @@ input:checked+.slider:before {
     height: 100%;
 }
 
-#homematic .card p {
+#homematic .card p,
+#deviceList p {
     width: 10rem;
     color: var(--fontColor2);
     font-size: 1.25rem;
@@ -523,4 +526,67 @@ input:checked+.slider:before {
     text-align: center;
     color: var(--fontColor2);
     visibility: hidden;
+}
+
+#allRooms {
+    margin-top: 2.5rem;
+}
+
+#roomList {
+    display: flex;
+    flex-basis: 50%;
+    flex-wrap: wrap;
+    column-gap: 2.5rem;
+}
+
+#roomList .switchContainer {
+    width: calc(50% - 2.5rem / 2);
+}
+
+#roomList .switchContainer p {
+    width: 14rem;
+}
+
+#roomOver {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.217);
+    top: 0;
+    left: 250px;
+    right: 0;
+    bottom: 0;
+    padding: 2.5rem;
+    pointer-events: all;
+    display: none;
+}
+
+.roomOverContent {
+    background-color: white;
+    border-radius: 0.65rem;
+    padding: 1.25rem;
+    position: relative;
+}
+
+.closeBtn {
+    width: 60px;
+    height: 34px;
+    background-color: var(--elementColor);
+    border-radius: 100px;
+    position: absolute;
+    right: 1.25rem;
+    top: 1.25rem;
+}
+
+#deviceList {
+    display: flex;
+    flex-basis: 50%;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+}
+
+#deviceList .switchContainer {
+    width: calc(50% - 2.5rem / 2);
+}
+
+#deviceList .switchContainer p {
+    width: 14rem;
 }
