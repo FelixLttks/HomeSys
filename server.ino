@@ -7,12 +7,12 @@ void initializeServer()
 
     server.on("/api", HTTP_GET, [](AsyncWebServerRequest *request)
               {
-                //  TYPES           PARAMS
-                //  config
-                //  valuereached    name
-                //                  value
-                //  startautomation device
-                Serial.println("server: /api");
+        //  TYPES           PARAMS
+        //  config
+        //  valuereached    name
+        //                  value
+        //  startautomation device
+        Serial.println("server: /api");
         if (!(request->hasParam("type")))
         {
             request->send(200, "text/plain", "{\"error\":\"no type specified\", \"data\": {}");
@@ -24,7 +24,9 @@ void initializeServer()
         {
             String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", inverter_sn}};
             request->send(200, "text/plain", createJsonFrom2dArray(config, 3));
-        } else if(type == "valuereached"){
+        }
+        else if (type == "valuereached")
+        {
             if (!(request->hasParam("name")))
             {
                 request->send(200, "text/plain", "{\"error\":\"no name specified\", \"data\": {}");
@@ -39,19 +41,28 @@ void initializeServer()
             String value = request->getParam("value")->value();
             Serial.println("valuereached: " + name + ": " + value);
 
-            if(name == "feedin" && value == "400"){
+            if (name == "feedin" && value == "400")
+            {
                 setShellyState(true);
             }
-        } else if(type == "startautomation"){
+        }
+        else if (type == "startautomation")
+        {
             if (!(request->hasParam("device")))
             {
                 request->send(200, "text/plain", "{\"error\":\"no device specified\", \"data\": {}");
                 return;
             }
             String device = request->getParam("device")->value();
-            if(device == "washingmachine"){
+            if (device == "washingmachine")
+            {
                 startAutomation();
             }
+        }
+        else if (type == "automationstate")
+        {
+            request->send(200, "text/plain", (shellyModeAuto ? "TRUE":"FALSE"));
+        
         }
         request->send(200, "text/plain", "{\"error\":\"no valid type\", \"data\": {}"); });
 

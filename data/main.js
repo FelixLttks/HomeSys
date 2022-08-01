@@ -33,3 +33,8 @@ function toggleSideMenu() {
         menu.style.display = 'none'
     }
 }
+
+function loadMode(id) {
+    response = httpGet('http://192.168.178.75/api?type=automationstate', 'return')
+    document.getElementById('washMode').querySelector('input').checked = response == 'TRUE'
+}

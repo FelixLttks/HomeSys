@@ -1,6 +1,9 @@
+bool shellyModeAuto = false;
+
 void setShellyState(bool state)
 {
     getRequest("http://" + String(shelly_ip) + "/relay/0?turn=" + (state ? "on" : "off"));
+    shellyModeAuto = !state;
 }
 
 void startAutomation()

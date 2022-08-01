@@ -151,6 +151,16 @@ function loadHmRooms() {
     }
 }
 
+function toggleAutoModus(state, id) {
+    if (id == 0) {
+        if (state) {
+            httpGet('/api?type=startautomation&device=washingmachine', null)
+        } else {
+            httpGet('http://192.168.178.103/relay/0?turn=on', null)
+        }
+    }
+}
+
 rooms = []
 
 // console.log(xml2jsonObj)

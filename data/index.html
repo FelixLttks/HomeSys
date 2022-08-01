@@ -166,12 +166,18 @@
                             <div class="statusCircle" id="statusUnknown"></div>
                         </div>
                     </div>
-                    <div id="recommendation" class="card">
-                        <h2 class="subtitle">Empfelungen</h2>
-                        <table id="recommendationTable">
-                            <tr id="washRecomm">
+                    <div id="modes" class="card">
+                        <h2 class="subtitle">Auto-Modus</h2>
+                        <table id="modeTable">
+                            <tr id="washMode">
                                 <td>Waschmaschiene</td>
-                                <td>stark</td>
+                                <td><label class="switch">
+                                    <input type="checkbox" onchange="toggleAutoModus(this.checked, 0)">
+                                    <span class="slider round" color="#FBB13F"></span>
+                                </label></td>
+                                <script>
+                                    loadMode(0)
+                                </script>
                             </tr>
                             <tr id="dryerRecomm">
                                 <td>Trockner</td>

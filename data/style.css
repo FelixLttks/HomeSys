@@ -222,25 +222,25 @@ html {
     margin-left: 1rem;
 }
 
-#recommendation {
+#modes {
     height: calc(100% - 6.5rem);
     position: absolute;
     width: 100%;
     color: var(--fontColor2);
 }
 
-#recommendation table tr td {
+#modes table tr td {
     width: 100%;
     color: var(--fontColor2);
     font-size: 1.25rem;
     height: 2rem;
 }
 
-#recommendation table td:nth-child(2) {
+#modes table td:nth-child(2) {
     text-align: end;
 }
 
-#recommendation .subtitle,
+#modes .subtitle,
 #history .subtitle,
 #allRooms .subtitle,
 #roomOver .subtitle {
@@ -596,6 +596,10 @@ input:checked+.slider:before {
     display: none;
 }
 
+#modeTable input:checked+.slider {
+    background-color: #FBB13F;
+}
+
 @media only screen and (max-device-width: 480px) {
     #sideMenu {
         display: none;
@@ -624,7 +628,7 @@ input:checked+.slider:before {
         height: 26.5rem;
         /* height: auto; */
     }
-    #recommendation {
+    #modes {
         height: 20rem;
     }
     #history>svg {
@@ -662,6 +666,9 @@ input:checked+.slider:before {
     #roomOver {
         left: 0;
         padding: 1rem;
+    }
+    #roomOver .subtitle {
+        margin-bottom: 3rem;
     }
     #deviceList {
         flex-direction: column;

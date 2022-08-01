@@ -74,7 +74,7 @@ function updateCurrentUi(data) {
     document.getElementById('inverterOverview').querySelector('.data').innerHTML = data.gridpower + 'W'
 
     updateDots(data)
-    updateRecomms(data)
+        // updateRecomms(data)
 
     document.getElementById('lastUpdated').innerHTML = 'last updated: ' + new Date().toLocaleTimeString()
 }
