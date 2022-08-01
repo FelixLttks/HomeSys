@@ -12,6 +12,7 @@ function openSubContent(name, btn) {
     console.log(rooms)
     if (name == 'homematic' && rooms.length == 0) {
         loadHmRooms()
+        loadHmDevice()
     }
     console.log(screen.width)
     if (screen.width < 480) {

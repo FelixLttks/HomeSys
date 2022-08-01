@@ -111,6 +111,30 @@ function setHm(deviceId, state) {
     }, 3000); //run this after 3 seconds
 }
 
+function loadHmDevice() {
+    console.log('loading hm favs')
+    switches = document.getElementById('favs').querySelectorAll('.switch')
+
+    for (i = 0; i < switches.length; ++i) {
+        console.log(switches[i].getAttribute('ise_id'))
+        ise_id = switches[i].getAttribute('ise_id')
+        if (ise_id != null) {
+            data = httpGet('http://ccu3-whv/addons/xmlapi/state.cgi?channel_id=' + ise_id, 'return')
+
+
+            substring = data.slice(data.indexOf(ise_id))
+            substring = substring.slice(substring.indexOf('value') + 7, substring.indexOf('value') + 12).replace('\'', '')
+            console.log(substring)
+                // console.log(substring.indexOf('value'))
+
+            switches[i].querySelector('input').checked = substring == 'true';
+
+        }
+    }
+
+
+}
+
 function loadHmRooms() {
     console.log('loading hm rooms')
     roomList = httpGet("http://ccu3-whv/addons/xmlapi/roomlist.cgi", 'return')

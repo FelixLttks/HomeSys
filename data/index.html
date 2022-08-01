@@ -394,29 +394,6 @@
                                 </span>
                             </label>
                         </div>
-                        <div class="switchContainer" id="hmTest">
-                            <p>Flutlicht</p>
-                            <label class="switch">
-                                <input type="checkbox" onclick="setHm(15599, this.checked)" checked>
-                                <span class="slider round" color="#FBB13F"></span>
-                            </label>
-                        </div>
-                        <div class="switchContainer" id="hmTest">
-                            <p>Terassenlicht</p>
-                            <label class="switch">
-                                <input type="checkbox" onclick="setHm(8195, this.checked)" checked>
-                                <span class="slider round" color="#FBB13F"></span>
-                            </label>
-                        </div>
-                        <div class="switchContainer" id="gridSwitch">
-                            <p>Garagenlicht</p>
-                            <label class="switch">
-                                <input type="checkbox" onclick="this.checked ? setHm(17029 , 'exe') : setHm(7471, false)">
-                                <span class="slider round" color="#FBB13F"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="element">
                         <div class="switchContainer" id="hmRollo">
                             <p>Rollo Terasse</p>
                             <div class="shutters">
@@ -435,6 +412,30 @@
                             </div>
 
                         </div>
+
+                        <div class="switchContainer" id="hmTest">
+                            <p>Terassenlicht</p>
+                            <label class="switch">
+                                <input type="checkbox" onclick="setHm(8195, this.checked)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
+                        <div class="switchContainer" id="gridSwitch">
+                            <p>Garagenlicht</p>
+                            <label class="switch">
+                                <input type="checkbox" onclick="this.checked ? setHm(17029 , 'exe') : setHm(7471, false)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="switchContainer" id="hmTest">
+                            <p>Flutlicht</p>
+                            <label class="switch" ise_id="15599">
+                                <input type="checkbox" onclick="setHm(15599, this.checked)">
+                                <span class="slider round" color="#FBB13F"></span>
+                            </label>
+                        </div>
                         <div class="switchContainer" id="gridSwitch">
                             <p>Gartenwasser</p>
                             <label class="switch">
@@ -444,7 +445,7 @@
                         </div>
                         <div class="switchContainer" id="gridSwitch">
                             <p>Springbrunnen</p>
-                            <label class="switch">
+                            <label class="switch" ise_id="15601">
                                 <input type="checkbox" onclick="this.checked ? setHm(17019 , 'exe') : setHm(15601, false)">
                                 <span class="slider round" color="#FBB13F"></span>
                             </label>
