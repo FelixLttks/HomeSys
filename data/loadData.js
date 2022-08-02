@@ -113,6 +113,7 @@ console.log(config)
 
 qHomeToken = config.qHomeToken
 inverterSn = config.inverter_sn
+shellyIp = config.shelly_ip
 
 console.log('qHomeToken: ' + qHomeToken)
 

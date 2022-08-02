@@ -22,8 +22,8 @@ void initializeServer()
         String type = request->getParam("type")->value();
         if (type == "config")
         {
-            String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", inverter_sn}};
-            request->send(200, "text/plain", createJsonFrom2dArray(config, 3));
+            String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", inverter_sn}, {"shelly_ip", shelly_ip}};
+            request->send(200, "text/plain", createJsonFrom2dArray(config, 4));
         }
         else if (type == "valuereached")
         {

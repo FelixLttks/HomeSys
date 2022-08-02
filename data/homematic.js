@@ -156,7 +156,7 @@ function toggleAutoModus(state, id) {
         if (state) {
             httpGet('/api?type=startautomation&device=washingmachine', null)
         } else {
-            httpGet('http://192.168.178.103/relay/0?turn=on', null)
+            httpGet('http://' + shellyIp + '/relay/0?turn=on', null)
         }
     }
 }
