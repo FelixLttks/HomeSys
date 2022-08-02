@@ -1,9 +1,9 @@
+
+
 void initializeServer()
 {
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-              { 
-                Serial.println("server: /");
-                request->send(SPIFFS, "/index.html", "text/html"); });
+              { request->send(SPIFFS, "/index.html", String(), false, processor); });
 
     server.on("/api", HTTP_GET, [](AsyncWebServerRequest *request)
               {
@@ -107,16 +107,6 @@ void initializeServer()
     server.begin();
 }
 
-String processor(const String &var)
-{
-    Serial.println(var);
-    if (var == "GPIO_STATE")
-    {
-        return "hi";
-    }
-    return String();
-}
-
 String postRequest(String url, String data, String token, String contentType)
 {
     Serial.println("post req: " + url + " data: " + data + " token: " + token);
@@ -206,4 +196,48 @@ String createJsonFrom2dArray(String array[][2], int size)
     int length = json.length();
     json[length - 1] = '}';
     return json;
+}
+
+
+void notifyClients()
+{
+    ws.textAll(String(ledState));
+}
+
+void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
+{
+    AwsFrameInfo *info = (AwsFrameInfo *)arg;
+    if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
+    {
+        data[len] = 0;
+        if (strcmp((char *)data, "toggle") == 0)
+        {
+            ledState = !ledState;
+            notifyClients();
+        }
+    }
+}
+
+
+void initWebSocket()
+{
+    ws.onEvent(onWebEvent);
+    server.addHandler(&ws);
+}
+
+String processor(const String &var)
+{
+    Serial.println(var);
+    if (var == "STATE")
+    {
+        if (ledState)
+        {
+            return "ON";
+        }
+        else
+        {
+            return "OFF";
+        }
+    }
+    return String();
 }

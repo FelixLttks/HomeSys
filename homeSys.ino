@@ -1,10 +1,10 @@
 
-AsyncWebServer server(80);
 
 unsigned long previousMillisReconnect = 0;
 unsigned long intervalReconnect = 5 * 60 * 1000;    // 5 min
 
 String qHomeToken;
+bool ledState = 0;
 
 void setup()
 {
@@ -19,7 +19,7 @@ void setup()
     }
 
     // connecting to WIFI
-    WiFi.setHostname(hostname); //  http://energy
+    // WiFi.setHostname(hostname); //  http://energy
     WiFi.begin(ssid, password);
 
     while (WiFi.status() != WL_CONNECTED)
@@ -29,12 +29,14 @@ void setup()
     }
     Serial.println("Connected to the WiFi network: " + String(ssid) + " with ip: " + String(WiFi.localIP()));
 
+    initWebSocket();
     initializeServer();
     qHomeToken = getNewQHomeToken();
 }
 
 void loop()
 {
+    ws.cleanupClients();
     unsigned long currentMillisReconnect = millis();
     // if WiFi is down, try reconnecting every CHECK_WIFI_TIME seconds
     if ((WiFi.status() != WL_CONNECTED) && (currentMillisReconnect - previousMillisReconnect >= intervalReconnect))

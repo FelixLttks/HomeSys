@@ -490,9 +490,67 @@ Rollo Terassentür sw -->
             <div class="devider"></div>
 
             <button onclick="httpGet('http\://ccu3-whv/addons/xmlapi/statechange.cgi?ise_id=7800&new_value=true', null)">licht</button>
+            <p id="chatField">hi</p>
+            <input type="text" name="" id="chatInput">
+            <button id="chatBtn">send</button>
 
         </div>
     </div>
 </body>
+
+<script>
+    var gateway = `ws://${window.location.hostname}/ws`;
+    var websocket;
+
+    function initWebSocket() {
+        console.log('Trying to open a WebSocket connection...');
+        websocket = new WebSocket(gateway);
+        websocket.onopen = onOpen;
+        websocket.onclose = onClose;
+        websocket.onmessage = onMessage; // <-- add this line
+    }
+
+    function onOpen(event) {
+        console.log('Connection opened');
+    }
+
+    function onClose(event) {
+        console.log('Connection closed');
+        setTimeout(initWebSocket, 2000);
+    }
+
+    function onMessage(event) {
+        // obj = JSON.parse(event)
+        console.log(event.data)
+        console.log(JSON.parse(event.data).text)
+            // var state;
+            // if (event.data == "1") {
+            //     state = "ON";
+            // } else {
+            //     state = "OFF";
+            // }
+            // document.getElementById('state').innerHTML = state;
+        document.getElementById('chatInput').value = ''
+        document.getElementById('chatField').innerHTML += '<br>' + JSON.parse(event.data).text
+    }
+
+    window.addEventListener('load', onLoad);
+
+    function onLoad(event) {
+        initWebSocket();
+        initButton();
+    }
+
+    function initButton() {
+        document.getElementById('chatBtn').addEventListener('click', toggle);
+    }
+
+    function toggle() {
+        // console.log(document.getElementById('chatInput').value)
+        websocket.send(JSON.stringify({
+            text: document.getElementById('chatInput').value
+        }));
+    }
+</script>
 
 </html>
