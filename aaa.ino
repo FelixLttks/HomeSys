@@ -6,6 +6,7 @@
 #include "ESPAsyncWebServer.h"
 #include "SPIFFS.h"
 #include <HTTPClient.h>
+#include <ArduinoJson.h>
 
 
 #include "config.h"
@@ -22,14 +23,17 @@ void onWebEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventTy
     switch (type)
     {
     case WS_EVT_CONNECT:
+        Serial.println(client->id());
+        Serial.println(client->remoteIP().toString().c_str());
+        ws.textAll(String("{\"type\": \"deviceconnected\", \"data\": {\"ip\": \"") + String(client->remoteIP().toString().c_str()) + "\", \"id\": \"" + client->id() + "\"}}");
         Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
         break;
     case WS_EVT_DISCONNECT:
         Serial.printf("WebSocket client #%u disconnected\n", client->id());
         break;
     case WS_EVT_DATA:
-        ws.textAll(data, len);
-        // handleWebSocketMessage(arg, data, len);
+        // ws.textAll(data, len);
+        handleWebSocketMessage(arg, data, len);
 
         break;
     case WS_EVT_PONG:

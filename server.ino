@@ -199,21 +199,35 @@ String createJsonFrom2dArray(String array[][2], int size)
 }
 
 
-void notifyClients()
+void notifyClients(String data)
 {
-    ws.textAll(String(ledState));
+    ws.textAll(String(data));
 }
 
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
+    Serial.println("handleWebSocketMessage()");
+    
+    // Serial.println(data);
+    // Serial.println(len);
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
+    // Serial.println(info);
     if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
     {
         data[len] = 0;
-        if (strcmp((char *)data, "toggle") == 0)
-        {
-            ledState = !ledState;
-            notifyClients();
+        Serial.println((char *)data);
+
+        String dataJson = (char *)data;
+
+        DynamicJsonDocument doc(96);
+        deserializeJson(doc, dataJson);
+
+        String type = doc["type"];
+
+        if(type == "chatmsg"){
+            notifyClients(dataJson);
+        }else if(type == "automationstate"){
+            notifyClients(dataJson);
         }
     }
 }

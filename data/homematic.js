@@ -157,6 +157,13 @@ function toggleAutoModus(state, id) {
             httpGet('/api?type=startautomation&device=washingmachine', null)
         } else {
             httpGet('http://' + shellyIp + '/relay/0?turn=on', null)
+            websocket.send(JSON.stringify({
+                type: 'automationstate',
+                data: {
+                    id: "washingmachine",
+                    state: "false"
+                }
+            }));
         }
     }
 }

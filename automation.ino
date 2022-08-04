@@ -13,7 +13,9 @@ void startAutomation()
     double energy_counter = deviceState.substring(deviceState.indexOf(String(energy_counter_iseId)) + 14,deviceState.indexOf(String(energy_counter_iseId)) + 21).toDouble();
     if(energy_counter < -400){
         setShellyState(true);
+        ws.textAll(String("{\"type\": \"automationstate\", \"data\": {\"id\": \"washingmachine\", \"state\": \"false\"}}"));
     }else{
         setShellyState(false);
+        ws.textAll(String("{\"type\": \"automationstate\", \"data\": {\"id\": \"washingmachine\", \"state\": \"true\"}}"));
     }
 }

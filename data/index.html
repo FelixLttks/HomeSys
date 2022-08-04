@@ -520,18 +520,24 @@ Rollo Terassentür sw -->
     }
 
     function onMessage(event) {
-        // obj = JSON.parse(event)
-        console.log(event.data)
-        console.log(JSON.parse(event.data).text)
-            // var state;
-            // if (event.data == "1") {
-            //     state = "ON";
-            // } else {
-            //     state = "OFF";
-            // }
-            // document.getElementById('state').innerHTML = state;
-        document.getElementById('chatInput').value = ''
-        document.getElementById('chatField').innerHTML += '<br>' + JSON.parse(event.data).text
+
+        obj = JSON.parse(event.data)
+        console.log(obj)
+
+        switch (obj.type) {
+            case 'chatmsg':
+                document.getElementById('chatInput').value = ''
+                document.getElementById('chatField').innerHTML += '<br>' + obj.data.text
+                break;
+            case 'deviceconnected':
+                document.getElementById('chatField').innerHTML += '<br> device connected with ip: ' + obj.data.ip
+                break;
+            case 'automationstate':
+                document.getElementById('washMode').querySelector('input').checked = obj.data.state == 'true'
+                break;
+        }
+
+
     }
 
     window.addEventListener('load', onLoad);
@@ -548,7 +554,10 @@ Rollo Terassentür sw -->
     function toggle() {
         // console.log(document.getElementById('chatInput').value)
         websocket.send(JSON.stringify({
-            text: document.getElementById('chatInput').value
+            type: 'chatmsg',
+            data: {
+                text: document.getElementById('chatInput').value
+            }
         }));
     }
 </script>
