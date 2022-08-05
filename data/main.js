@@ -38,3 +38,12 @@ function loadMode(id) {
     response = httpGet('http://192.168.178.75/api?type=automationstate', 'return')
     document.getElementById('washMode').querySelector('input').checked = response == 'TRUE'
 }
+
+function callFunction(name) {
+    websocket.send(JSON.stringify({
+        type: 'callfunction',
+        data: {
+            name: name
+        }
+    }));
+}

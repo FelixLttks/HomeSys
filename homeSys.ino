@@ -6,6 +6,9 @@ unsigned long intervalReconnect = 5 * 60 * 1000;    // 5 min
 String qHomeToken;
 bool ledState = 0;
 
+String configJson;
+
+
 void setup()
 {
     Serial.begin(115200);
@@ -27,15 +30,33 @@ void setup()
         delay(1000);
         Serial.println("Connecting to WiFi..");
     }
-    Serial.println("Connected to the WiFi network: " + String(ssid) + " with ip: " + String(WiFi.localIP()));
+    Serial.println("Connected to the WiFi network: " + String(ssid) + " with ip: " + WiFi.localIP());
 
     initWebSocket();
-    initializeServer();
+    
     qHomeToken = getNewQHomeToken();
+
+    String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", inverter_sn}, {"shelly_ip", shelly_ip}};
+    configJson = createJsonFrom2dArray(config, 4);
+
+    // ftp.OpenConnection();
+
+    configTime(0, 0, ntpServer);
+
+    epochTime = getTime() + 2 * 60 * 60;
+    Serial.print("Epoch Time: ");
+    Serial.println(epochTime);
+    Serial.println(millis());
+
+    initializeServer();
+
+    log("setup done");
 }
 
 void loop()
 {
+    delay(2000);
+    vTaskDelay(portMAX_DELAY);
     ws.cleanupClients();
     unsigned long currentMillisReconnect = millis();
     // if WiFi is down, try reconnecting every CHECK_WIFI_TIME seconds
@@ -47,4 +68,16 @@ void loop()
         WiFi.reconnect();
         previousMillisReconnect = currentMillisReconnect;
     }
+}
+
+
+unsigned long getTime() {
+  time_t now;
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
+    //Serial.println("Failed to obtain time");
+    return(0);
+  }
+  time(&now);
+  return now;
 }

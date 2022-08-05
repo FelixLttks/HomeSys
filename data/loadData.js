@@ -108,6 +108,32 @@ function loadChart(date) {
     getQHomeData(qHomeToken, inverterSn, date, setChart)
 }
 
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
+async function test() {
+    console.log('start timer');
+    await delay(5000);
+    console.log('after 1 second');
+
+    if (qHomeToken != '') {
+        document.addEventListener("DOMContentLoaded", function(event) {
+            document.getElementById('statusQHome').style.backgroundColor = '#11AB73'
+        });
+    } else {
+        console.log('empty qHomeToken')
+    }
+
+
+    getQHomeData(qHomeToken, inverterSn, '', setCurrent)
+    getQHomeData(qHomeToken, inverterSn, new Date().toISOString().split('T')[0], setChart)
+
+    initButton()
+}
+
+test()
+
 config = JSON.parse(httpGet("/api?type=config", 'return'))
 console.log(config)
 
@@ -117,18 +143,10 @@ shellyIp = config.shelly_ip
 
 console.log('qHomeToken: ' + qHomeToken)
 
-if (qHomeToken != '') {
-    document.addEventListener("DOMContentLoaded", function(event) {
-        document.getElementById('statusQHome').style.backgroundColor = '#11AB73'
-    });
-} else {
-    console.log('empty qHomeToken')
-}
+
 
 dataQHome = []
 
-getQHomeData(qHomeToken, inverterSn, '', setCurrent)
-getQHomeData(qHomeToken, inverterSn, new Date().toISOString().split('T')[0], setChart)
 
 window.setInterval(function() {
     getQHomeData(qHomeToken, inverterSn, '', setCurrent)

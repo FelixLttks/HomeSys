@@ -2,8 +2,31 @@
 
 void initializeServer()
 {
+    Serial.println("initializeServer()");
+
+    File file2 = SPIFFS.open("/test.html");
+
+    if (!file2)
+    {
+        Serial.println("Failed to open file for reading");
+        return;
+    }
+
+    Serial.println("File Content:");
+
+    while (file2.available())
+    {
+        content += char(file2.read());
+    }
+
+    Serial.println(content);
+
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-              { request->send(SPIFFS, "/index.html", String(), false, processor); });
+              { 
+                // request->send(SPIFFS, "/index.html", String(), false, processor);
+                // request->send(SPIFFS, "/index.html", String(), false);
+                // request->send(200, "text/plain", "test");
+                request->send(200, "text/html", content); });
 
     server.on("/api", HTTP_GET, [](AsyncWebServerRequest *request)
               {
@@ -22,8 +45,8 @@ void initializeServer()
         String type = request->getParam("type")->value();
         if (type == "config")
         {
-            String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", inverter_sn}, {"shelly_ip", shelly_ip}};
-            request->send(200, "text/plain", createJsonFrom2dArray(config, 4));
+            
+            request->send(200, "text/plain", configJson);
         }
         else if (type == "valuereached")
         {
@@ -78,7 +101,7 @@ void initializeServer()
     server.on("/overviewDots.js", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(SPIFFS, "/overviewDots.js", "text/javascript"); });
 
-    server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request)
+    server.on("/favicon.png", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(SPIFFS, "/favicon.png", "image/png"); });
 
     server.on("/recommendation.js", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -103,6 +126,15 @@ void initializeServer()
                 Serial.println("shelly test");
                 startAutomation();
                 request->send(200, "text/plain", "startAutomation()"); });
+
+    server.on("/dashboard.html", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/dashboard.html", "text/html"); });
+
+    server.on("/homematic.html", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/homematic.html", "text/html"); });
+
+    server.on("/felix.html", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/felix.html", "text/html"); });
 
     server.begin();
 }
@@ -198,7 +230,6 @@ String createJsonFrom2dArray(String array[][2], int size)
     return json;
 }
 
-
 void notifyClients(String data)
 {
     ws.textAll(String(data));
@@ -207,7 +238,7 @@ void notifyClients(String data)
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
     Serial.println("handleWebSocketMessage()");
-    
+
     // Serial.println(data);
     // Serial.println(len);
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
@@ -224,14 +255,16 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 
         String type = doc["type"];
 
-        if(type == "chatmsg"){
+        if (type == "chatmsg")
+        {
             notifyClients(dataJson);
-        }else if(type == "automationstate"){
+        }
+        else if (type == "automationstate")
+        {
             notifyClients(dataJson);
         }
     }
 }
-
 
 void initWebSocket()
 {

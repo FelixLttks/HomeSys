@@ -7,6 +7,8 @@
 #include "SPIFFS.h"
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <ESP32_FTPClient.h>
+#include "time.h"
 
 
 #include "config.h"
@@ -14,6 +16,12 @@
 
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
+// ESP32_FTPClient ftp(ftp_server, ftp_user, ftp_pass, 5000, 2);
+
+
+unsigned long epochTime; 
+String content = "";
+
 
 
 // somehow this methode has to be in the first file
@@ -27,6 +35,7 @@ void onWebEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventTy
         Serial.println(client->remoteIP().toString().c_str());
         ws.textAll(String("{\"type\": \"deviceconnected\", \"data\": {\"ip\": \"") + String(client->remoteIP().toString().c_str()) + "\", \"id\": \"" + client->id() + "\"}}");
         Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
+        log("WebSocket client connected from "+ String(client->remoteIP().toString().c_str()));
         break;
     case WS_EVT_DISCONNECT:
         Serial.printf("WebSocket client #%u disconnected\n", client->id());
