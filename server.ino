@@ -266,6 +266,11 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
         else if (type == "updatetoken")
         {
             qHomeToken = getNewQHomeToken();
+            String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", inverter_sn}, {"shelly_ip", shelly_ip}};
+            configJson = createJsonFrom2dArray(config, 4);
+            Serial.println("new Token: " + qHomeToken);
+            String response = "{\"type\": \"updatetoken\", \"data\": { \"qHomeToken\": \"" + qHomeToken + "\"}}";
+            notifyClients(response);
         }
     }
 }

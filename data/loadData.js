@@ -67,8 +67,13 @@ function setCurrent(data) {
 }
 
 function updateCurrentUi(data) {
+    console.log('gridpower: ' + data.gridpower)
     if (data.gridpower == undefined) {
-        document.getElementById('solarOverview').style.display = 'block'
+        document.getElementById('overviewUpdate').style.display = 'flex'
+        document.getElementById('updateLoading').style.display = 'none'
+        document.getElementById('updateBtn').style.display = 'block'
+    } else {
+        document.getElementById('overviewUpdate').style.display = 'none'
     }
 
     document.getElementById('solarOverview').querySelector('.data').innerHTML = (data.powerdc1 + data.powerdc2) + 'W'
@@ -105,6 +110,11 @@ function setChart(data) {
         createDataset(dataQHome)
     });
     // console.log(dataQHome)
+    chartsToLoad -= 1;
+    if (chartsToLoad <= 0) {
+        document.getElementById('updateChart').style.display = 'none'
+    }
+
 }
 
 function loadChart(date) {
@@ -150,6 +160,7 @@ console.log('qHomeToken: ' + qHomeToken)
 
 
 dataQHome = []
+chartsToLoad = 0;
 
 
 window.setInterval(function() {

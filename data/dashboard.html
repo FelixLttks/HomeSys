@@ -54,7 +54,7 @@
                                     stroke-linecap="round" />
                             </svg>
                     </div>
-                    <p class="data">89%</p>
+                    <p class="data">0%</p>
                 </div>
                 <div class="circle" id="inverterOverview">
                     <div class="svgClass">
@@ -79,7 +79,7 @@
                                     stroke-width="6" mask="url(#path-5-inside-2_13_154)" />
                             </svg>
                     </div>
-                    <p class="data">9.67kW</p>
+                    <p class="data">0kW</p>
                 </div>
                 <div class="circle" id="gridOverview">
                     <div class="svgClass">
@@ -94,7 +94,7 @@
                                     stroke="#383874" stroke-width="3" stroke-linecap="round" />
                             </svg>
                     </div>
-                    <p class="data">8907W</p>
+                    <p class="data">0W</p>
                 </div>
                 <div class="circle" id="houseOverview">
                     <div class="svgClass">
@@ -107,12 +107,18 @@
                             </svg>
 
                     </div>
-                    <p class="data">679W</p>
+                    <p class="data">0W</p>
                 </div>
             </div>
             <div id="overviewUpdate">
-                <div class="updateBtn" onclick="updateToken('qhome')">
+                <div class="updateBtn" onclick="updateToken('qhome')" id="updateBtn">
                     update
+                </div>
+                <div class="lds-ellipsis" id="updateLoading">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </div>
             </div>
         </div>
@@ -174,6 +180,8 @@
                 console.log('today: ' + date.toISOString().split('T')[0])
 
                 function changeDate(delta) {
+                    document.getElementById('updateChart').style.display = 'inline-block'
+                    chartsToLoad += 1;
                     if (
                         date.getFullYear() === new Date().getFullYear() &&
                         date.getMonth() === new Date().getMonth() &&
@@ -227,6 +235,12 @@
                         stroke-width="10" />
                 </svg>
         </div>
+    </div>
+    <div class="lds-ellipsis" id="updateChart">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
     <svg fill="red" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
             <path d="M 20 5 20 95" stroke="var(--grayColor)" stroke-width="0.5" fill="none" />
@@ -285,7 +299,7 @@
         </div>
     </div>
 </div>
-<div id="house" class="card">
+<div id="house" class="card" style="display: none;">
     <h2 class="subtitle">House</h2>
     <div class="cardContent">
         <div id="overviewHouse">

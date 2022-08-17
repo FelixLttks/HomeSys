@@ -49,6 +49,8 @@ function callFunction(name) {
 }
 
 function updateToken(service) {
+    document.getElementById('updateLoading').style.display = 'inline-block'
+    document.getElementById('updateBtn').style.display = 'none'
     websocket.send(JSON.stringify({
         type: 'updatetoken',
         data: {

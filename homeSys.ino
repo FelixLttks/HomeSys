@@ -34,7 +34,8 @@ void setup()
 
     initWebSocket();
     
-    qHomeToken = getNewQHomeToken();
+    // qHomeToken = getNewQHomeToken();
+    qHomeToken = "1570e9ca-5865-4652-9a72-e17608098295";
 
     String config[4][2] = {{"ccu3", "ccu3-whv"}, {"qHomeToken", qHomeToken}, {"inverter_sn", inverter_sn}, {"shelly_ip", shelly_ip}};
     configJson = createJsonFrom2dArray(config, 4);

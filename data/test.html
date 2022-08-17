@@ -99,6 +99,13 @@
             case 'automationstate':
                 document.getElementById('washMode').querySelector('input').checked = obj.data.state == 'true'
                 break;
+            case 'updatetoken':
+                qHomeToken = obj.data.qHomeToken
+                console.log('qHomeToken: ' + qHomeToken)
+
+                getQHomeData(qHomeToken, inverterSn, '', setCurrent)
+                getQHomeData(qHomeToken, inverterSn, new Date().toISOString().split('T')[0], setChart)
+                break
         }
 
 
