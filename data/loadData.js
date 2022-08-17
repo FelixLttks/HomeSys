@@ -67,6 +67,10 @@ function setCurrent(data) {
 }
 
 function updateCurrentUi(data) {
+    if (data.gridpower == undefined) {
+        document.getElementById('solarOverview').style.display = 'block'
+    }
+
     document.getElementById('solarOverview').querySelector('.data').innerHTML = (data.powerdc1 + data.powerdc2) + 'W'
     document.getElementById('batteryOverview').querySelector('.data').innerHTML = data.batteryCapacity + '%'
     document.getElementById('gridOverview').querySelector('.data').innerHTML = Math.abs(data.feedinpower) + 'W'

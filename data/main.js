@@ -47,3 +47,12 @@ function callFunction(name) {
         }
     }));
 }
+
+function updateToken(service) {
+    websocket.send(JSON.stringify({
+        type: 'updatetoken',
+        data: {
+            service: service
+        }
+    }));
+}

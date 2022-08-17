@@ -45,7 +45,6 @@ void initializeServer()
         String type = request->getParam("type")->value();
         if (type == "config")
         {
-            
             request->send(200, "text/plain", configJson);
         }
         else if (type == "valuereached")
@@ -87,6 +86,7 @@ void initializeServer()
             request->send(200, "text/plain", (shellyModeAuto ? "TRUE":"FALSE"));
         
         }
+        
         request->send(200, "text/plain", "{\"error\":\"no valid type\", \"data\": {}"); });
 
     server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -262,6 +262,10 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
         else if (type == "automationstate")
         {
             notifyClients(dataJson);
+        }
+        else if (type == "updatetoken")
+        {
+            qHomeToken = getNewQHomeToken();
         }
     }
 }
